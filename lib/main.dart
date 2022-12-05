@@ -32,16 +32,16 @@ class MyHomePage extends StatefulWidget {
 // todo가 가지고 있는 여러 값을 가져오기 위해 변수 설정
  List<Todo> todos = [
    Todo(
-     title: "강의 듣기1",
-     memo: "앱 개발 강의",
+     title: "강의1 듣기1",
+     memo: "앱 개발 강의2",
      color: Colors.redAccent.value, // 컬러 코드를 인트값으로 변경
      done: 0,
      category: "공부",
      date: 20221205
    ),
    Todo(
-       title: "강의 듣기2",
-       memo: "앱 개발 강의",
+       title: "강의2 듣기2",
+       memo: "앱 개발 강의2",
        color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
        done: 0,
        category: "공부",
@@ -64,7 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           if(index == 0){
             return Container(
-              child: Text("오늘하루"),
+              child: Text("오늘하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             );
           }else if(index == 1){
             return Container(
@@ -73,7 +74,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: List.generate(todos.length, (index) {
                   // 각각 리스트의 데이터 접근하기
                   Todo t = todos[index];
-                  return Text(t.title);
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Color(t.color),
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+                            Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
+                          ],
+                        ),
+                        Container(height: 8,),
+                        Text(t.memo, style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
+                  );
                 }),
               ),
             );
