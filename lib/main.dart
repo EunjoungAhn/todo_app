@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'data/todo/todo.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -27,6 +29,25 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+// todo가 가지고 있는 여러 값을 가져오기 위해 변수 설정
+ List<Todo> todos = [
+   Todo(
+     title: "강의 듣기1",
+     memo: "앱 개발 강의",
+     color: Colors.redAccent.value, // 컬러 코드를 인트값으로 변경
+     done: 0,
+     category: "공부",
+     date: 20221205
+   ),
+   Todo(
+       title: "강의 듣기2",
+       memo: "앱 개발 강의",
+       color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
+       done: 0,
+       category: "공부",
+       date: 20221205
+   )
+ ];
 
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -39,10 +60,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: AppBar(),
         preferredSize: Size.fromHeight(0),
       ),
-      body: Column(
-        children: [
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          if(index == 0){
+            return Container(
+              child: Text("오늘하루"),
+            );
+          }else if(index == 1){
+            return Container(
+              child: Column(
+                // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
+                children: List.generate(todos.length, (index) {
+                  // 각각 리스트의 데이터 접근하기
+                  Todo t = todos[index];
+                  return Text(t.title);
+                }),
+              ),
+            );
+          }
 
-        ],
+          return Container();
+        },
+        itemCount: 4,
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
