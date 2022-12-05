@@ -43,7 +43,7 @@ class MyHomePage extends StatefulWidget {
        title: "강의2 듣기2",
        memo: "앱 개발 강의2",
        color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
-       done: 0,
+       done: 1,
        category: "공부",
        date: 20221205
    )
@@ -68,16 +68,67 @@ class _MyHomePageState extends State<MyHomePage> {
               margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             );
           }else if(index == 1){
+
+            // where 반복문 같은 것
+            List<Todo> undone = todos.where((element) {
+              // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
+              return element.done == 0;
+            }).toList();
+
             return Container(
               child: Column(
                 // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
-                children: List.generate(todos.length, (index) {
+                children: List.generate(undone.length, (index) {
                   // 각각 리스트의 데이터 접근하기
-                  Todo t = todos[index];
+                  Todo t = undone[index];
                   return Container(
                     decoration: BoxDecoration(
                       color: Color(t.color),
                       borderRadius: BorderRadius.circular(16)
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+                            Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
+                          ],
+                        ),
+                        Container(height: 8,),
+                        Text(t.memo, style: TextStyle(color: Colors.white),),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+            );
+          }
+
+          else if(index == 2){
+            return Container(
+              child: Text("완료된 하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+            );
+          }else if(index == 3){
+
+            List<Todo> done = todos.where((element) {
+              return element.done == 1;
+            }).toList();
+
+            return Container(
+              child: Column(
+                // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
+                children: List.generate(done.length, (index) {
+                  // 각각 리스트의 데이터 접근하기
+                  Todo t = done[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                        color: Color(t.color),
+                        borderRadius: BorderRadius.circular(16)
                     ),
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
                     margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
