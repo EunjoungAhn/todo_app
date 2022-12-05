@@ -16,6 +16,7 @@ class _TodoWritePageState extends State<TodoWritePage> {
   // TextFild를 사용하기 위해 필요한 변수
   TextEditingController nameController = TextEditingController();
   TextEditingController memoController = TextEditingController();
+  int colorIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,29 @@ class _TodoWritePageState extends State<TodoWritePage> {
       body: ListView.builder(
         itemBuilder: (context, index) {
           if(index == 0){
-            return Container(
-              child: Text("제목"),
+            return InkWell(
+              child: Container(
+                child: Text("제목", style: TextStyle(fontSize: 20),),
+                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              ),
+              onTap: () {
+                List<Color> colors =[
+                  Color(0xFF80d3f4),
+                  Color(0xFFa794fa),
+                  Color(0xFFfb91d1),
+                  Color(0xFFfb8a94),
+                  Color(0xFFfebd9a),
+                  Color(0xFF51e29d),
+                  Color(0xFFFFFFFF),
+                ];
+
+                widget.todo.color = colors[colorIndex].value;
+                colorIndex++;
+                setState(() {
+                  // 해당 리스트의 길이로 나누면 인덱스를 순회한다.
+                  colorIndex = colorIndex % colors.length;
+                });
+              },
             );
           }
           else if(index == 1){
@@ -42,13 +64,15 @@ class _TodoWritePageState extends State<TodoWritePage> {
               child: TextField(
                 controller: nameController,
               ),
+              margin: EdgeInsets.symmetric(horizontal: 16),
             );
           }
           else if(index == 2){
             return Container(
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Row(
                 children: [
-                  Text("색상"),
+                  Text("색상", style: TextStyle(fontSize: 20),),
                   Container(
                     width: 10,
                     height: 10,
@@ -60,9 +84,10 @@ class _TodoWritePageState extends State<TodoWritePage> {
           }
           else if(index == 3){
             return Container(
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               child: Row(
                 children: [
-                  Text("카테고리"),
+                  Text("카테고리", style: TextStyle(fontSize: 20),),
                   Text(widget.todo.category)
                 ],
               ),
@@ -70,11 +95,13 @@ class _TodoWritePageState extends State<TodoWritePage> {
           }
           else if(index == 4){
             return Container(
-                 child: Text("메모"),
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                 child: Text("메모", style: TextStyle(fontSize: 20),),
             );
           }
           else if(index == 5){
             return Container(
+              margin: EdgeInsets.symmetric(vertical: 1, horizontal: 16),
               child: TextField(
                 controller: memoController,
                 maxLines: 10,
