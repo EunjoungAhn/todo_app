@@ -64,9 +64,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white,),
-        onPressed: () {
+        onPressed: () async {
           // 화면 이동하기
-          Navigator.of(context).push(
+          Todo todo = await Navigator.of(context).push(
             // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
               MaterialPageRoute(builder: (context) => TodoWritePage(
                 todo: Todo(
@@ -77,6 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   category: "",
                   date: Utils.getFormatTime(DateTime.now())
                 ))));
+
+          // 새로 추가된 리스트 화면에 적용하기
+          setState(() {
+            todos.add(todo);
+          });
         },
       ),
       body: ListView.builder(

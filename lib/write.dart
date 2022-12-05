@@ -28,6 +28,11 @@ class _TodoWritePageState extends State<TodoWritePage> {
             child: Text("저장", style: TextStyle(color: Colors.white),),
             onPressed: () {
               // 페이지 저장시 사용
+              widget.todo.title = nameController.text;
+              widget.todo.memo = memoController.text;
+              
+              // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
+              Navigator.of(context).pop(widget.todo);
             },
           ),
         ],
@@ -51,13 +56,14 @@ class _TodoWritePageState extends State<TodoWritePage> {
           else if(index == 2){
             return InkWell(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("색상", style: TextStyle(fontSize: 20),),
                     Container(
-                      width: 10,
-                      height: 10,
+                      width: 20,
+                      height: 20,
                       color: Color(widget.todo.color), // widget. 하면 내 위의 StatefulWidget에 선언된 값을 가져올 수 있다.
                     )
                   ],
@@ -86,8 +92,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
           else if(index == 3){
             return InkWell(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("카테고리", style: TextStyle(fontSize: 20),),
                     Text(widget.todo.category)
