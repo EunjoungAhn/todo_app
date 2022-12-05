@@ -17,6 +17,7 @@ class _TodoWritePageState extends State<TodoWritePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController memoController = TextEditingController();
   int colorIndex = 0;
+  int categoryIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,29 +35,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
       body: ListView.builder(
         itemBuilder: (context, index) {
           if(index == 0){
-            return InkWell(
-              child: Container(
-                child: Text("제목", style: TextStyle(fontSize: 20),),
-                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              ),
-              onTap: () {
-                List<Color> colors =[
-                  Color(0xFF80d3f4),
-                  Color(0xFFa794fa),
-                  Color(0xFFfb91d1),
-                  Color(0xFFfb8a94),
-                  Color(0xFFfebd9a),
-                  Color(0xFF51e29d),
-                  Color(0xFFFFFFFF),
-                ];
-
-                widget.todo.color = colors[colorIndex].value;
-                colorIndex++;
-                setState(() {
-                  // 해당 리스트의 길이로 나누면 인덱스를 순회한다.
-                  colorIndex = colorIndex % colors.length;
-                });
-              },
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Text("제목", style: TextStyle(fontSize: 20),),
             );
           }
           else if(index == 1){
@@ -68,29 +49,61 @@ class _TodoWritePageState extends State<TodoWritePage> {
             );
           }
           else if(index == 2){
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: [
-                  Text("색상", style: TextStyle(fontSize: 20),),
-                  Container(
-                    width: 10,
-                    height: 10,
-                    color: Color(widget.todo.color), // widget. 하면 내 위의 StatefulWidget에 선언된 값을 가져올 수 있다.
-                  )
-                ],
+            return InkWell(
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: Row(
+                  children: [
+                    Text("색상", style: TextStyle(fontSize: 20),),
+                    Container(
+                      width: 10,
+                      height: 10,
+                      color: Color(widget.todo.color), // widget. 하면 내 위의 StatefulWidget에 선언된 값을 가져올 수 있다.
+                    )
+                  ],
+                ),
               ),
+                onTap: () {
+                  List<Color> colors = [
+                    Color(0xFF80d3f4),
+                    Color(0xFFa794fa),
+                    Color(0xFFfb91d1),
+                    Color(0xFFfb8a94),
+                    Color(0xFFfebd9a),
+                    Color(0xFF51e29d),
+                    Color(0xFFFFFFFF),
+                  ];
+
+                  widget.todo.color = colors[colorIndex].value;
+                  colorIndex++;
+                  setState(() {
+                    // 해당 리스트의 길이로 나누면 인덱스를 순회한다.
+                    colorIndex = colorIndex % colors.length;
+                  });
+              },
             );
           }
           else if(index == 3){
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Row(
-                children: [
-                  Text("카테고리", style: TextStyle(fontSize: 20),),
-                  Text(widget.todo.category)
-                ],
+            return InkWell(
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: Row(
+                  children: [
+                    Text("카테고리", style: TextStyle(fontSize: 20),),
+                    Text(widget.todo.category)
+                  ],
+                ),
               ),
+              onTap: () {
+                List<String> category = ["공부", "게임", "운동"];
+
+                widget.todo.category = category[categoryIndex];
+                categoryIndex++;
+                setState(() {
+                  categoryIndex = categoryIndex % category.length;
+                });
+
+              },
             );
           }
           else if(index == 4){
