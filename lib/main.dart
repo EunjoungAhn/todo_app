@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/data/todo/util.dart';
+import 'package:todo_app/write.dart';
 
 import 'data/todo/todo.dart';
 
@@ -64,7 +66,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add, color: Colors.white,),
         onPressed: () {
           // 화면 이동하기
-          
+          Navigator.of(context).push(
+            // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+              MaterialPageRoute(builder: (context) => TodoWritePage(
+                todo: Todo(
+                  title: "",
+                  color: 0,
+                  memo: "",
+                  done: 0,
+                  category: "",
+                  date: Utils.getFormatTime(DateTime.now())
+                ))));
         },
       ),
       body: ListView.builder(
