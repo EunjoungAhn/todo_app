@@ -60,6 +60,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: AppBar(),
         preferredSize: Size.fromHeight(0),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, color: Colors.white,),
+        onPressed: () {
+          // 화면 이동하기
+          
+        },
+      ),
       body: ListView.builder(
         itemBuilder: (context, index) {
           if(index == 0){
