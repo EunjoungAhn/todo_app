@@ -92,4 +92,27 @@ class DatabaseHelper {
 
     return todos;
   }
+
+  // 해당 날짜의 투두 리스트를 전체 불러오는 기능
+  Future<List<Todo>> getTodoByDate(int date) async {
+    Database db = await instance.database;
+    List<Todo> todos = [];
+
+    // todoTable 있는 데이터를 다 가져와라
+    var queries = await db.query(todoTable, where: "date = ?", whereArgs: [date]);
+
+    // 투두 리스트에 다 담아주고
+    for(var q in queries){
+      todos.add(Todo(
+        id: q["id"],
+        title: q["title"],
+        date: q["date"],
+        memo: q["memo"],
+        category: q["category"],
+        color: q["color"],
+      ));
+    }
+
+    return todos;
+  }
 }
