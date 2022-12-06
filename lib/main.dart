@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Todo t = undone[index];
                 return InkWell(
                   child: TodoCardWidget(t: t),
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       if(t.done == 0){
                         t.done = 1;
@@ -157,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         t.done = 0;
                       }
                     });
+                    await dbHelper.insertTodo(t);
                   },
                   onLongPress: () async {
                     getTodayTodo();
@@ -186,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Todo t = done[index];
                 return InkWell(
                   child: TodoCardWidget(t: t),
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       if(t.done == 0){
                         t.done = 1;
@@ -194,6 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         t.done = 0;
                       }
                     });
+                    await dbHelper.insertTodo(t);
                   },
                   onLongPress: () async {
                     Todo todo = await Navigator.of(context).push(
