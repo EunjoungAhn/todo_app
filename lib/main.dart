@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/write.dart';
 
@@ -33,25 +34,31 @@ class MyHomePage extends StatefulWidget {
 }
 // todo가 가지고 있는 여러 값을 가져오기 위해 변수 설정
  List<Todo> todos = [
-   Todo(
-     title: "강의1 듣기1",
-     memo: "앱 개발 강의2",
-     color: Colors.redAccent.value, // 컬러 코드를 인트값으로 변경
-     done: 0,
-     category: "공부",
-     date: 20221205
-   ),
-   Todo(
-       title: "강의2 듣기2",
-       memo: "앱 개발 강의2",
-       color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
-       done: 1,
-       category: "공부",
-       date: 20221205
-   )
+   // Todo(
+   //   title: "강의1 듣기1",
+   //   memo: "앱 개발 강의2",
+   //   color: Colors.redAccent.value, // 컬러 코드를 인트값으로 변경
+   //   done: 0,
+   //   category: "공부",
+   //   date: 20221205
+   // ),
+   // Todo(
+   //     title: "강의2 듣기2",
+   //     memo: "앱 개발 강의2",
+   //     color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
+   //     done: 1,
+   //     category: "공부",
+   //     date: 20221205
+   // )
  ];
 
+void getTodayTodo(){
+
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
