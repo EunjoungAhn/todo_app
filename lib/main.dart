@@ -33,26 +33,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 // todo가 가지고 있는 여러 값을 가져오기 위해 변수 설정
- List<Todo> todos = [
-   // Todo(
-   //   title: "강의1 듣기1",
-   //   memo: "앱 개발 강의2",
-   //   color: Colors.redAccent.value, // 컬러 코드를 인트값으로 변경
-   //   done: 0,
-   //   category: "공부",
-   //   date: 20221205
-   // ),
-   // Todo(
-   //     title: "강의2 듣기2",
-   //     memo: "앱 개발 강의2",
-   //     color: Colors.blue.value, // 컬러 코드를 인트값으로 변경
-   //     done: 1,
-   //     category: "공부",
-   //     date: 20221205
-   // )
- ];
-
-
+ List<Todo> todos = [];
 
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -62,9 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
     todos = await dbHelper.getTodoByDate(Utils.getFormatTime(DateTime.now()));
-    setState(() {
+    setState(() { });
+  }
 
-    });
+  // 오늘 날짜 기준의 투두들을 가져와라
+  void getAllTodo() async {
+    allTodo = await dbHelper.getAllTodo();
+    setState(() { });
   }
 
   @override
@@ -102,24 +87,28 @@ class _MyHomePageState extends State<MyHomePage> {
           getTodayTodo();
         },
       ),
-      body: getMain(),
+      body: getPage(),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.today_outlined),
             label: "오늘"
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment_outlined),
-            label: "기록"
+            label: "기록",
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.more_horiz),
-              label: "더보기"
+              label: "더보기",
           ),
         ],
         currentIndex: selectIndex,
         onTap: (index) {
+          // 항상 모든 리스트를 가져와라
+          if(index == 1){
+            getAllTodo();
+          }
           setState(() {
             selectIndex = index;
           });
@@ -228,8 +217,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getHistory(){
+  // 전체 기록을 가져오는 리스트
+  List<Todo> allTodo = [];
 
+  Widget getHistory(){
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return TodoCardWidget(t: allTodo[index]);
+      },
+      itemCount: allTodo.length,
+    );
   }
 }
 
@@ -239,6 +236,9 @@ class TodoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int now = Utils.getFormatTime(DateTime.now());
+    DateTime time = Utils.numToDateTime(t.date); // 실제 날자를 변경
+
     return Container(
       decoration: BoxDecoration(
           color: Color(t.color),
@@ -258,6 +258,7 @@ class TodoCardWidget extends StatelessWidget {
           ),
           Container(height: 8,),
           Text(t.memo, style: TextStyle(color: Colors.white),),
+          now == t.date ? Container() : Text("${time.month}월 ${time.day}일", style: TextStyle(color: Colors.white),),
         ],
       ),
     );
