@@ -6,6 +6,7 @@ class Todo {
   int color;
   int done;
   int date;
+  int id;
 
   Todo({
     this.title,
@@ -13,6 +14,7 @@ class Todo {
     this.category,
     this.color,
     this.done,
-    this.date
+    this.date,
+    this.id
   });
 }
