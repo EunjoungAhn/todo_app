@@ -106,28 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   // 각각 리스트의 데이터 접근하기
                   Todo t = undone[index];
                   return InkWell(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(t.color),
-                        borderRadius: BorderRadius.circular(16)
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                              Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
-                            ],
-                          ),
-                          Container(height: 8,),
-                          Text(t.memo, style: TextStyle(color: Colors.white),),
-                        ],
-                      ),
-                    ),
+                    child: TodoCardWidget(t: t),
                     onTap: () {
                       setState(() {
                         if(t.done == 0){
@@ -160,27 +139,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: List.generate(done.length, (index) {
                   // 각각 리스트의 데이터 접근하기
                   Todo t = done[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: Color(t.color),
-                        borderRadius: BorderRadius.circular(16)
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-                            Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
-                          ],
-                        ),
-                        Container(height: 8,),
-                        Text(t.memo, style: TextStyle(color: Colors.white),),
-                      ],
-                    ),
+                  return InkWell(
+                    child: TodoCardWidget(t: t),
+                    onTap: () {
+                      setState(() {
+                        if(t.done == 0){
+                          t.done = 1;
+                        }else{
+                          t.done = 0;
+                        }
+                      });
+                    },
                   );
                 }),
               ),
@@ -210,3 +179,35 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+class TodoCardWidget extends StatelessWidget {
+  final Todo t;
+  const TodoCardWidget({Key key, this.t}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Color(t.color),
+          borderRadius: BorderRadius.circular(16)
+      ),
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+      margin: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+              Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
+            ],
+          ),
+          Container(height: 8,),
+          Text(t.memo, style: TextStyle(color: Colors.white),),
+        ],
+      ),
+    );
+  }
+}
+
