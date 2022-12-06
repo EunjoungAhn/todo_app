@@ -30,7 +30,8 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE IF NOT EXISTS $todoTable (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      data INTEGER DEFAULT 0,
+      date INTEGER DEFAULT 0,
+      done INTEGER DEFAULT 0,
       title String,
       memo String,
       color INTEGER,
@@ -50,6 +51,7 @@ class DatabaseHelper {
       Map<String, dynamic> row = {
         "title": todo.title,
         "date": todo.date,
+        "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
         "category": todo.category
@@ -60,6 +62,7 @@ class DatabaseHelper {
       Map<String, dynamic> row = {
         "title": todo.title,
         "date": todo.date,
+        "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
         "category": todo.category
@@ -84,6 +87,7 @@ class DatabaseHelper {
         id: q["id"],
         title: q["title"],
         date: q["date"],
+        done: q["done"],
         memo: q["memo"],
         category: q["category"],
         color: q["color"],
@@ -107,6 +111,7 @@ class DatabaseHelper {
         id: q["id"],
         title: q["title"],
         date: q["date"],
+        done: q["done"],
         memo: q["memo"],
         category: q["category"],
         color: q["color"],

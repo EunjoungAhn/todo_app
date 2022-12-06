@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/data/todo/database.dart';
 import 'data/todo/todo.dart';
 
 class TodoWritePage extends StatefulWidget {
@@ -16,6 +17,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
   // TextFild를 사용하기 위해 필요한 변수
   TextEditingController nameController = TextEditingController();
   TextEditingController memoController = TextEditingController();
+
+  final dbHelper = DatabaseHelper.instance;
+
   int colorIndex = 0;
   int categoryIndex = 0;
 
@@ -33,10 +37,11 @@ class _TodoWritePageState extends State<TodoWritePage> {
         actions: [
           TextButton(
             child: Text("저장", style: TextStyle(color: Colors.white),),
-            onPressed: () {
+            onPressed: () async {
               // 페이지 저장시 사용
               widget.todo.title = nameController.text;
               widget.todo.memo = memoController.text;
+              await dbHelper.insertTodo(widget.todo);
               
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);

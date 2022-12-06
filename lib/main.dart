@@ -52,13 +52,26 @@ class MyHomePage extends StatefulWidget {
    // )
  ];
 
-void getTodayTodo(){
 
-}
 
 class _MyHomePageState extends State<MyHomePage> {
 
   final dbHelper = DatabaseHelper.instance;
+  int selectIndex = 0;
+
+  // 오늘 날짜 기준의 투두들을 가져와라
+  void getTodayTodo() async {
+    todos = await dbHelper.getTodoByDate(Utils.getFormatTime(DateTime.now()));
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    getTodayTodo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,106 +99,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))));
 
           // 새로 추가된 리스트 화면에 적용하기
-          setState(() {
-            todos.add(todo);
-          });
+          getTodayTodo();
         },
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          if(index == 0){
-            return Container(
-              child: Text("오늘하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            );
-          }else if(index == 1){
-
-            // where 반복문 같은 것
-            List<Todo> undone = todos.where((element) {
-              // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
-              return element.done == 0;
-            }).toList();
-
-            return Container(
-              child: Column(
-                // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
-                children: List.generate(undone.length, (index) {
-                  // 각각 리스트의 데이터 접근하기
-                  Todo t = undone[index];
-                  return InkWell(
-                    child: TodoCardWidget(t: t),
-                    onTap: () {
-                      setState(() {
-                        if(t.done == 0){
-                          t.done = 1;
-                        }else{
-                          t.done = 0;
-                        }
-                      });
-                    },
-                    onLongPress: () async {
-                      Todo todo = await Navigator.of(context).push(
-                        // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
-                          MaterialPageRoute(builder: (context) => TodoWritePage(
-                              todo: t)));
-                      setState(() {
-
-                      });
-                    },
-                  );
-                }),
-              ),
-            );
-          }
-
-          else if(index == 2){
-            return Container(
-              child: Text("완료된 하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            );
-          }else if(index == 3){
-
-            List<Todo> done = todos.where((element) {
-              return element.done == 1;
-            }).toList();
-
-            return Container(
-              child: Column(
-                // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
-                children: List.generate(done.length, (index) {
-                  // 각각 리스트의 데이터 접근하기
-                  Todo t = done[index];
-                  return InkWell(
-                    child: TodoCardWidget(t: t),
-                    onTap: () {
-                      setState(() {
-                        if(t.done == 0){
-                          t.done = 1;
-                        }else{
-                          t.done = 0;
-                        }
-                      });
-                    },
-                      onLongPress: () async {
-                        Todo todo = await Navigator.of(context).push(
-                          // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
-                            MaterialPageRoute(builder: (context) =>
-                                TodoWritePage(
-                                    todo: t)));
-                        setState(() {
-
-                        });
-                    },
-                  );
-                }),
-              ),
-            );
-          }
-
-          return Container();
-        },
-        itemCount: 4,
-      ),
+      body: getMain(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -201,8 +118,118 @@ class _MyHomePageState extends State<MyHomePage> {
               label: "더보기"
           ),
         ],
+        currentIndex: selectIndex,
+        onTap: (index) {
+          setState(() {
+            selectIndex = index;
+          });
+        },
       ),
     );
+  }
+
+  Widget getPage(){
+    if(selectIndex == 0){
+      return getMain();
+    }else{
+      return getHistory();
+    }
+  }
+
+  Widget getMain(){
+   return ListView.builder(
+      itemBuilder: (context, index) {
+        if(index == 0){
+          return Container(
+            child: Text("오늘하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          );
+        }else if(index == 1){
+
+          // where 반복문 같은 것
+          List<Todo> undone = todos.where((element) {
+            // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
+            return element.done == 0;
+          }).toList();
+
+          return Container(
+            child: Column(
+              // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
+              children: List.generate(undone.length, (index) {
+                // 각각 리스트의 데이터 접근하기
+                Todo t = undone[index];
+                return InkWell(
+                  child: TodoCardWidget(t: t),
+                  onTap: () {
+                    setState(() {
+                      if(t.done == 0){
+                        t.done = 1;
+                      }else{
+                        t.done = 0;
+                      }
+                    });
+                  },
+                  onLongPress: () async {
+                    getTodayTodo();
+                  },
+                );
+              }),
+            ),
+          );
+        }
+
+        else if(index == 2){
+          return Container(
+            child: Text("완료된 하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          );
+        }else if(index == 3){
+
+          List<Todo> done = todos.where((element) {
+            return element.done == 1;
+          }).toList();
+
+          return Container(
+            child: Column(
+              // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
+              children: List.generate(done.length, (index) {
+                // 각각 리스트의 데이터 접근하기
+                Todo t = done[index];
+                return InkWell(
+                  child: TodoCardWidget(t: t),
+                  onTap: () {
+                    setState(() {
+                      if(t.done == 0){
+                        t.done = 1;
+                      }else{
+                        t.done = 0;
+                      }
+                    });
+                  },
+                  onLongPress: () async {
+                    Todo todo = await Navigator.of(context).push(
+                      // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                        MaterialPageRoute(builder: (context) =>
+                            TodoWritePage(
+                                todo: t)));
+                    setState(() {
+
+                    });
+                  },
+                );
+              }),
+            ),
+          );
+        }
+
+        return Container();
+      },
+      itemCount: 4,
+    );
+  }
+
+  Widget getHistory(){
+
   }
 }
 
