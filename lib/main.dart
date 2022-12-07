@@ -166,7 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
                         MaterialPageRoute(builder: (context) => TodoWritePage(
                             todo: t)));
-
                     getTodayTodo();
                   },
                 );
@@ -210,9 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         MaterialPageRoute(builder: (context) =>
                             TodoWritePage(
                                 todo: t)));
-                    setState(() {
-
-                    });
+                    setState(() { });
                   },
                 );
               }),
@@ -234,16 +231,18 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           return InkWell(
               child: TodoCardWidget(t: allTodo[index]),
-            onTap: () {
+            onLongPress: () {
               showModalBottomSheet(context: context,
-                  builder: (context) => MoreActionBottomSheet(
-                    onPressedDelete: () {
-                      setState(() {
-                        dbHelper.deleteTodo(allTodo[index].id);
-                        Navigator.pop(context);
-                      });
-                    },
-                  ),
+                builder: (context) => MoreActionBottomSheet(
+                  onPressedDelete: () {
+                    dbHelper.deleteTodo(allTodo[index].id);
+                    Navigator.pop(context);
+                    setState(() {
+                      getTodayTodo();
+                      getAllTodo();
+                    });
+                  },
+                ),
               );
             }, // onTap
           );
