@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
+import 'package:todo_app/more_bottomsheet.dart';
 import 'package:todo_app/write.dart';
 
 import 'data/todo/todo.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -49,6 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
   // 오늘 날짜 기준의 투두들을 가져와라
   void getAllTodo() async {
     allTodo = await dbHelper.getAllTodo();
+    setState(() { });
+  }
+
+  // 기록 삭제
+  void delteToday() async {
+    // await dbHelper.deleteTodo();
     setState(() { });
   }
 
@@ -230,12 +237,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget getHistory(){
     return ListView.builder(
-      itemBuilder: (context, index) {
-        return TodoCardWidget(t: allTodo[index]);
-      },
-      itemCount: allTodo.length,
-    );
-  }
+        itemBuilder: (context, index) {
+          return InkWell(
+              child: TodoCardWidget(t: allTodo[index]),
+            onTap: () {
+              showModalBottomSheet(context: context,
+                  builder: (context) => MoreActionBottomSheet(
+                    onPressedDelete: () {
+                      // delteToday();
+                      Navigator.pop(context);
+                    },
+                  ),
+              );
+            }, // onTap
+          );
+        },
+        itemCount: allTodo.length,
+      );
+  } // getHistory
+
 }
 
 class TodoCardWidget extends StatelessWidget {
