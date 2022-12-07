@@ -53,12 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() { });
   }
 
-  // 기록 삭제
-  void delteToday() async {
-    // await dbHelper.deleteTodo();
-    setState(() { });
-  }
-
   @override
   void initState() {
     getTodayTodo();
@@ -244,8 +238,10 @@ class _MyHomePageState extends State<MyHomePage> {
               showModalBottomSheet(context: context,
                   builder: (context) => MoreActionBottomSheet(
                     onPressedDelete: () {
-                      // delteToday();
-                      Navigator.pop(context);
+                      setState(() {
+                        dbHelper.deleteTodo(allTodo[index].id);
+                        Navigator.pop(context);
+                      });
                     },
                   ),
               );
