@@ -120,4 +120,23 @@ class DatabaseHelper {
 
     return todos;
   }
+
+  // 투두 삭제
+  Future<int> deleteTodo(Todo todo) async {
+    Database db = await instance.database;
+
+    if (todo.id != null) {
+      Map<String, dynamic> row = {
+        "title": todo.title,
+        "date": todo.date,
+        "done": todo.done,
+        "memo": todo.memo,
+        "color": todo.color,
+        "category": todo.category
+      };
+      // map 구조를 데이터 베이스에 넣기
+      return await db.delete(todoTable, where: "id = ?", whereArgs: [todo.id]);
+    }
+  }
+
 }
