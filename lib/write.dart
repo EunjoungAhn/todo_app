@@ -9,15 +9,14 @@ import 'data/todo/todo.dart';
 class TodoWritePage extends StatefulWidget {
 
   final Todo todo;
-  final String time;
 
-  const TodoWritePage({Key key, this.time, this.todo}) : super(key: key);
+  const TodoWritePage({Key key, this.todo}) : super(key: key);
 
   @override
-  State<TodoWritePage> createState() => _TodoWritePageState();
+  State<TodoWritePage> createState() => TodoWritePageState();
 }
 
-class _TodoWritePageState extends State<TodoWritePage> {
+class TodoWritePageState extends State<TodoWritePage> {
 
   // TextFild를 사용하기 위해 필요한 변수
   TextEditingController nameController = TextEditingController();
@@ -27,6 +26,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
 
   int colorIndex = 0;
   int categoryIndex = 0;
+
+  // 시간 포맷 패키지로 포맷하기
+  String nowTime = DateFormat('HH:mm').format(DateTime.now());
 
   @override
   void initState() {
@@ -107,19 +109,13 @@ class _TodoWritePageState extends State<TodoWritePage> {
             );
           }
           else if(index == 3){
-            // 시간 포맷 패키지로 포맷하기
-            final now = DateTime.now();
-            final nowTime = DateFormat('HH:mm').format(now);
-            //DateTime 포맷을 String으로 변환
-            final initTime = DateFormat('HH:mm').parse(nowTime);
-
             return InkWell(
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("알림시간", style: TextStyle(fontSize: 20),),
+                    Text("알림시간", style: TextStyle(fontSize: 20)),
                     Text(nowTime),
                   ],
                 ),
@@ -129,13 +125,57 @@ class _TodoWritePageState extends State<TodoWritePage> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return TimePickerBottomSheet(
-                          initialDateTime: initTime,
+                        return BottomSheetBody(
+                          children: [
+                            SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
+                              height: 200,
+                              child:
+                              CupertinoDatePicker(onDateTimeChanged: (dateTime) {
+                                nowTime = DateFormat('HH:mm').format(dateTime);
+                                print(nowTime);
+                              },
+                                mode: CupertinoDatePickerMode.time,
+                              ),
+                            ),
+                            SizedBox(width: regularSpace),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    height: submitButtonHeight,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        textStyle: Theme.of(context).textTheme.subtitle1,
+                                        backgroundColor: Colors.white,
+                                        foregroundColor: Colors.black,
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text("취소"),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: smallSpace),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: submitButtonHeight,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
+                                      // pop을 할때 nowTime 데이터를 넘긴다.
+                                      onPressed: () => Navigator.pop(context, nowTime),
+                                      child: const Text("선택"),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         );
                       },
-                  ); 
+                  ).then((value) {
+                    if(value == null || value is! DateTime) return;
+                    nowTime;
+                  });
                 });
-
               },
             );
           }
@@ -166,65 +206,4 @@ class _TodoWritePageState extends State<TodoWritePage> {
       ),
     );
   }
-}
-
-class TimePickerBottomSheet extends StatelessWidget {
-  // 내가 설정하고 싶은 시간 설정
-  final DateTime initialDateTime;
-
-  const TimePickerBottomSheet({Key key, this.initialDateTime}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomSheetBody(
-      children: [
-        SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
-          height: 200,
-          child:
-          CupertinoDatePicker(onDateTimeChanged: (dateTime) {
-
-          },
-            mode: CupertinoDatePickerMode.time,
-            initialDateTime: initialDateTime,
-          ),
-        ),
-        SizedBox(width: regularSpace),
-        Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: submitButtonHeight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    textStyle: Theme.of(context).textTheme.subtitle1,
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                  ),
-                  onPressed: () {
-
-                  },
-                  child: const Text("취소"),
-                ),
-              ),
-            ),
-            SizedBox(width: smallSpace),
-            Expanded(
-              child: SizedBox(
-                height: submitButtonHeight,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
-                  onPressed: () {
-
-                  },
-                  child: const Text("선택"),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-
 }
