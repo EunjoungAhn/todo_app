@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/components/app_widgets.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'data/todo/todo.dart';
 
@@ -108,18 +110,30 @@ class _TodoWritePageState extends State<TodoWritePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("카테고리", style: TextStyle(fontSize: 20),),
+                    Text("알림시간", style: TextStyle(fontSize: 20),),
                     Text(widget.todo.category)
                   ],
                 ),
               ),
               onTap: () {
-                List<String> category = ["공부", "게임", "운동"];
-
-                widget.todo.category = category[categoryIndex];
-                categoryIndex++;
                 setState(() {
-                  categoryIndex = categoryIndex % category.length;
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return BottomSheetBody(
+                          children: [
+                            SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
+                              height: 200,
+                              child:
+                                CupertinoDatePicker(onDateTimeChanged: (dateTime) {
+
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                  ); 
                 });
 
               },
