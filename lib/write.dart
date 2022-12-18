@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/components/app_constants.dart';
 import 'package:todo_app/components/app_widgets.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'data/todo/todo.dart';
@@ -111,7 +112,7 @@ class _TodoWritePageState extends State<TodoWritePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("알림시간", style: TextStyle(fontSize: 20),),
-                    Text(widget.todo.category)
+                    Text("20:00"),
                   ],
                 ),
               ),
@@ -120,18 +121,7 @@ class _TodoWritePageState extends State<TodoWritePage> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return BottomSheetBody(
-                          children: [
-                            SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
-                              height: 200,
-                              child:
-                                CupertinoDatePicker(onDateTimeChanged: (dateTime) {
-
-                                },
-                              ),
-                            ),
-                          ],
-                        );
+                        return TimePickerBottomSheet();
                       },
                   ); 
                 });
@@ -166,4 +156,61 @@ class _TodoWritePageState extends State<TodoWritePage> {
       ),
     );
   }
+}
+
+class TimePickerBottomSheet extends StatelessWidget {
+  const TimePickerBottomSheet({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheetBody(
+      children: [
+        SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
+          height: 200,
+          child:
+          CupertinoDatePicker(onDateTimeChanged: (dateTime) {
+
+          },
+            mode: CupertinoDatePickerMode.time,
+          ),
+        ),
+        SizedBox(width: regularSpace),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: submitButtonHeight,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.subtitle1,
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  onPressed: () {
+
+                  },
+                  child: const Text("취소"),
+                ),
+              ),
+            ),
+            SizedBox(width: smallSpace),
+            Expanded(
+              child: SizedBox(
+                height: submitButtonHeight,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
+                  onPressed: () {
+
+                  },
+                  child: const Text("선택"),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+
 }
