@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/components/app_constants.dart';
 import 'package:todo_app/components/app_widgets.dart';
 import 'package:todo_app/data/todo/database.dart';
@@ -8,8 +9,9 @@ import 'data/todo/todo.dart';
 class TodoWritePage extends StatefulWidget {
 
   final Todo todo;
+  final String time;
 
-  const TodoWritePage({Key key, this.todo}) : super(key: key);
+  const TodoWritePage({Key key, this.time, this.todo}) : super(key: key);
 
   @override
   State<TodoWritePage> createState() => _TodoWritePageState();
@@ -105,6 +107,12 @@ class _TodoWritePageState extends State<TodoWritePage> {
             );
           }
           else if(index == 3){
+            // 시간 포맷 패키지로 포맷하기
+            final now = DateTime.now();
+            final nowTime = DateFormat('HH:mm').format(now);
+            //DateTime 포맷을 String으로 변환
+            final initTime = DateFormat('HH:mm').parse(nowTime);
+
             return InkWell(
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
@@ -112,7 +120,7 @@ class _TodoWritePageState extends State<TodoWritePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("알림시간", style: TextStyle(fontSize: 20),),
-                    Text("20:00"),
+                    Text(nowTime),
                   ],
                 ),
               ),
@@ -121,7 +129,9 @@ class _TodoWritePageState extends State<TodoWritePage> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return TimePickerBottomSheet();
+                        return TimePickerBottomSheet(
+                          initialDateTime: initTime,
+                        );
                       },
                   ); 
                 });
@@ -159,7 +169,10 @@ class _TodoWritePageState extends State<TodoWritePage> {
 }
 
 class TimePickerBottomSheet extends StatelessWidget {
-  const TimePickerBottomSheet({Key key}) : super(key: key);
+  // 내가 설정하고 싶은 시간 설정
+  final DateTime initialDateTime;
+
+  const TimePickerBottomSheet({Key key, this.initialDateTime}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +185,7 @@ class TimePickerBottomSheet extends StatelessWidget {
 
           },
             mode: CupertinoDatePickerMode.time,
+            initialDateTime: initialDateTime,
           ),
         ),
         SizedBox(width: regularSpace),
