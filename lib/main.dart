@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: 0,
                   memo: "",
                   done: 0,
-                  category: "",
+                  time: "",
                   date: Utils.getFormatTime(DateTime.now())
                 ))));
 
@@ -98,10 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment_outlined),
             label: "기록",
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.more_horiz),
-              label: "더보기",
           ),
         ],
         currentIndex: selectIndex,
@@ -272,6 +268,7 @@ class TodoCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(t.time, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

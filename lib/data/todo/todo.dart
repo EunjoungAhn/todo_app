@@ -2,7 +2,7 @@
 class Todo {
   String title;
   String memo;
-  String category;
+  String time;
   int color;
   int done;
   int date;
@@ -11,7 +11,7 @@ class Todo {
   Todo({
     this.title,
     this.memo,
-    this.category,
+    this.time,
     this.color,
     this.done,
     this.date,

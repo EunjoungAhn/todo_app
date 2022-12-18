@@ -35,7 +35,7 @@ class DatabaseHelper {
       title String,
       memo String,
       color INTEGER,
-      category String
+      time String
     )
     ''');
   }
@@ -54,7 +54,7 @@ class DatabaseHelper {
         "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
-        "category": todo.category
+        "time": todo.time
       };
       // map 구조를 데이터 베이스에 넣기
       return await db.insert(todoTable, row);
@@ -65,7 +65,7 @@ class DatabaseHelper {
         "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
-        "category": todo.category
+        "time": todo.time
       };
       // 해당 아이디어의 정보를 수정, 없으면 새로운 아이디를 위가하여 위의 코드를 실행
       return await db.update(todoTable, row, where: "id = ?", whereArgs: [todo.id]);
@@ -89,7 +89,7 @@ class DatabaseHelper {
         date: q["date"],
         done: q["done"],
         memo: q["memo"],
-        category: q["category"],
+        time: q["time"],
         color: q["color"],
       ));
     }
@@ -113,7 +113,7 @@ class DatabaseHelper {
         date: q["date"],
         done: q["done"],
         memo: q["memo"],
-        category: q["category"],
+        time: q["time"],
         color: q["color"],
       ));
     }
