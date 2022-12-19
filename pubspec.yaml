@@ -47,6 +47,9 @@ dependencies:
   timezone: ^0.8.0
   flutter_native_timezone: ^2.0.0
 
+  # permission 이 없으면 셋팅 페이지로 show setting 이동을 돕는 패키지
+  permission_handler: ^8.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
