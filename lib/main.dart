@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
@@ -48,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final dbHelper = DatabaseHelper.instance;
   int selectIndex = 0;
 
+
+
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
     todos = await dbHelper.getTodoByDate(Utils.getFormatTime(DateTime.now()));
@@ -68,6 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // 시간 포맷 패키지로 포맷하기
+    String nowTime = DateFormat('HH:mm').format(DateTime.now());
     return Scaffold(
       // appBar를 그냥 없애면 바디 전체가 appBar를 지운 부분인 상단부터 시작되기 때문에
       // 보이기 않게 appBar를 감싸준다.
@@ -87,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: 0,
                   memo: "",
                   done: 0,
-                  time: "",
+                  time: nowTime,
                   date: Utils.getFormatTime(DateTime.now())
                 ))));
 
