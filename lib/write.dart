@@ -29,16 +29,17 @@ class TodoWritePageState extends State<TodoWritePage> {
 
   // 시간 포맷 패키지로 포맷하기
   String nowTime = DateFormat('HH:mm').format(DateTime.now());
-
   @override
   void initState() {
     super.initState();
     nameController.text = widget.todo.title;
     memoController.text = widget.todo.memo;
+    nowTime = widget.todo.time;
   }
 
   @override
   Widget build(BuildContext context) {
+    final initTime = DateFormat('HH:mm').parse(nowTime);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -98,8 +99,8 @@ class TodoWritePageState extends State<TodoWritePage> {
                     Color(0xFF51e29d),
                     Color(0xFFFFFFFF),
                   ];
-
                   widget.todo.color = colors[colorIndex].value;
+
                   colorIndex++;
                   setState(() {
                     // 해당 리스트의 길이로 나누면 인덱스를 순회한다.
@@ -121,60 +122,64 @@ class TodoWritePageState extends State<TodoWritePage> {
                 ),
               ),
               onTap: () {
-                setState(() {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return BottomSheetBody(
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return BottomSheetBody(
+                      children: [
+                        SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
+                          height: 200,
+                          child:
+                          CupertinoDatePicker(onDateTimeChanged: (dateTime) {
+                            nowTime = DateFormat('HH:mm').format(dateTime);
+                            print(nowTime);
+                          },
+                            mode: CupertinoDatePickerMode.time,
+                            initialDateTime: initTime,
+                          ),
+                        ),
+                        SizedBox(width: regularSpace),
+                        Row(
                           children: [
-                            SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
-                              height: 200,
-                              child:
-                              CupertinoDatePicker(onDateTimeChanged: (dateTime) {
-                                nowTime = DateFormat('HH:mm').format(dateTime);
-                                print(nowTime);
-                              },
-                                mode: CupertinoDatePickerMode.time,
+                            Expanded(
+                              child: SizedBox(
+                                height: submitButtonHeight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    textStyle: Theme.of(context).textTheme.subtitle1,
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.black,
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text("취소"),
+                                ),
                               ),
                             ),
-                            SizedBox(width: regularSpace),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    height: submitButtonHeight,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        textStyle: Theme.of(context).textTheme.subtitle1,
-                                        backgroundColor: Colors.white,
-                                        foregroundColor: Colors.black,
-                                      ),
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text("취소"),
-                                    ),
-                                  ),
+                            SizedBox(width: smallSpace),
+                            Expanded(
+                              child: SizedBox(
+                                height: submitButtonHeight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
+                                  // pop을 할때 nowTime 데이터를 넘긴다.
+                                  onPressed: (){
+                                    setState(() {
+                                      Navigator.pop(context, nowTime);
+                                      widget.todo.time = nowTime;
+                                    });
+                                  },
+                                  child: const Text("선택"),
                                 ),
-                                SizedBox(width: smallSpace),
-                                Expanded(
-                                  child: SizedBox(
-                                    height: submitButtonHeight,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
-                                      // pop을 할때 nowTime 데이터를 넘긴다.
-                                      onPressed: () => Navigator.pop(context, nowTime),
-                                      child: const Text("선택"),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
-                        );
-                      },
-                  ).then((value) {
-                    if(value == null || value is! DateTime) return;
-                    nowTime;
-                  });
+                        ),
+                      ],
+                    );
+                  },
+                ).then((value) {
+                  if(value == null || value is! DateTime) return;
+                  nowTime;
                 });
               },
             );
