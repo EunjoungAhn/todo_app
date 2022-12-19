@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todo_app/components/app_constants.dart';
 import 'package:todo_app/components/app_widgets.dart';
 import 'package:todo_app/data/todo/database.dart';
+import 'package:todo_app/main.dart';
 import 'data/todo/todo.dart';
 
 class TodoWritePage extends StatefulWidget {
@@ -25,7 +27,7 @@ class TodoWritePageState extends State<TodoWritePage> {
   final dbHelper = DatabaseHelper.instance;
 
   int colorIndex = 0;
-  int categoryIndex = 0;
+  int alarmId = 0;
 
   // 시간 포맷 패키지로 포맷하기
   String nowTime = DateFormat('HH:mm').format(DateTime.now());
@@ -50,7 +52,32 @@ class TodoWritePageState extends State<TodoWritePage> {
               widget.todo.title = nameController.text;
               widget.todo.memo = memoController.text;
               await dbHelper.insertTodo(widget.todo);
-              
+
+              //알림 등록
+              final result = await notification.addNotifcication(
+                alarmTimeStr: nowTime,
+                title: "${nameController.text}",
+                body: "자세한 내용은 앱에서 확인해주세요!",
+                id: alarmId + 1,
+                );
+
+                if(!result){
+                  // 알림 설정 확인
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("알림 권한이 없습니다."),
+                              TextButton(onPressed: openAppSettings,
+                                child: Text("설정창으로 이동"),
+                              )
+                            ],
+                          )
+                      )
+                  );
+                }
+
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);
             },
