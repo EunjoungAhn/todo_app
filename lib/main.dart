@@ -5,13 +5,13 @@ import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/service/notification_service.dart';
 import 'package:todo_app/write.dart';
-
 import 'data/todo/todo.dart';
+
+final notification = AppNotificationService();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final notification = AppNotificationService();
   notification.initializeTimeZone();
   notification.initializeNotification();
 

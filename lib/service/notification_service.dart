@@ -39,16 +39,16 @@ class AppNotificationService {
       initializationSettings,
     );
   }
-
-  String alarmId(int medicineId, String alarmTime) {
-    return medicineId.toString() + alarmTime.replaceAll(':', '');
+  // 알람 시간을 받아와서 스트링으로 변환
+  String alarmId(int alarmId, String alarmTime) {
+    return alarmId.toString() + alarmTime.replaceAll(':', '');
   }
 
   Future<bool> addNotifcication({
-    int medicineId,
+    int id,
     String alarmTimeStr,
-    String title, // HH:mm 약 먹을 시간이예요!
-    String body, // {약이름} 복약했다고 알려주세요!
+    String title, // HH:mm 메모를 확인해주세요!
+    String body, // {메모 제목}
   }) async {
     if (!await permissionNotification) { // addNotifcication을 호출하면 permission을 묻는다.
       // show native setting page - 내가 알람권한이 없으면 설정창으로 가서 알림권한을 추가해줘
@@ -64,7 +64,7 @@ class AppNotificationService {
         : now.day;
 
     /// id
-    String alarmTimeId = alarmId(medicineId, alarmTimeStr);
+    String alarmTimeId = alarmId(id, alarmTimeStr);
 
     /// add schedule notification
     final details = _notificationDetails(
