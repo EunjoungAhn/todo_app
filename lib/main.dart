@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
+import 'package:todo_app/service/notification_service.dart';
 import 'package:todo_app/write.dart';
 
 import 'data/todo/todo.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final notification = AppNotificationService();
+  notification.initializeTimeZone();
+  notification.initializeNotification();
+
   runApp(const MyApp());
 }
 
