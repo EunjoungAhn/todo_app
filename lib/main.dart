@@ -30,6 +30,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'GmarketSansTTF',
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // 기기의 폰트 사이즈에 의존하지 않게 설정
+      builder: (context, child) => MediaQuery(
+        child: child,
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      ),
     );
   }
 }
