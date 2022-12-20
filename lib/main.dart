@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.amber,
+        fontFamily: 'GmarketSansTTF',
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
