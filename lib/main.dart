@@ -5,6 +5,7 @@ import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/service/notification_service.dart';
 import 'package:todo_app/write.dart';
+import 'components/app_themes.dart';
 import 'data/todo/todo.dart';
 
 final notification = AppNotificationService();
@@ -25,10 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-        fontFamily: 'GmarketSansTTF',
-      ),
+      theme: AppThemes.lightTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // 기기의 폰트 사이즈에 의존하지 않게 설정
       builder: (context, child) => MediaQuery(
@@ -111,13 +109,14 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.today_outlined),
-            label: "오늘"
+            label: "오늘",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment_outlined),
             label: "기록",
           ),
         ],
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
         currentIndex: selectIndex,
         onTap: (index) {
           // 항상 모든 리스트를 가져와라
@@ -145,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
       itemBuilder: (context, index) {
         if(index == 0){
           return Container(
-            child: Text("오늘하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            child: Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 1){
@@ -190,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         else if(index == 2){
           return Container(
-            child: Text("완료된 하루", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            child: Text("Check", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 3){
@@ -286,17 +285,29 @@ class TodoCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(t.time, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
+          Row(
+            children: [
+              now == t.date ? Text("${time.month}월 ${time.day}일",
+                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold))
+              : Text("${time.month}월 ${time.day}일",
+                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)
+              ),
+              SizedBox(width: 20,),
+              Text(t.time,
+                style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          SizedBox(height: 5,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(t.title, style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),),
-              Text(t.done == 0 ? "미완료" : "완료", style: TextStyle(color: Colors.white),),
+              Text(t.title, style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold),),
+              Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
             ],
           ),
           Container(height: 8,),
-          Text(t.memo, style: TextStyle(color: Colors.white),),
-          now == t.date ? Container() : Text("${time.month}월 ${time.day}일", style: TextStyle(color: Colors.white),),
+          Text(t.memo, style: TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),),
         ],
       ),
     );

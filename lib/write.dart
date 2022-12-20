@@ -46,7 +46,7 @@ class TodoWritePageState extends State<TodoWritePage> {
       appBar: AppBar(
         actions: [
           TextButton(
-            child: Text("저장", style: TextStyle(color: Colors.white),),
+            child: Text("저장", style: Theme.of(context).textTheme.subtitle1,),
             onPressed: () async {
               // 페이지 저장시 사용
               widget.todo.title = nameController.text;
@@ -89,7 +89,7 @@ class TodoWritePageState extends State<TodoWritePage> {
           if(index == 0){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              child: Text("제목", style: TextStyle(fontSize: 20),),
+              child: Text("제목", style: Theme.of(context).textTheme.subtitle1,),
             );
           }
           else if(index == 1){
@@ -107,7 +107,7 @@ class TodoWritePageState extends State<TodoWritePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("색상", style: TextStyle(fontSize: 20),),
+                    Text("색상", style: Theme.of(context).textTheme.subtitle1,),
                     Container(
                       width: 20,
                       height: 20,
@@ -143,8 +143,8 @@ class TodoWritePageState extends State<TodoWritePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("알림시간", style: TextStyle(fontSize: 20)),
-                    Text(nowTime),
+                    Text("알림시간", style: Theme.of(context).textTheme.subtitle1),
+                    Text(nowTime, style: Theme.of(context).textTheme.subtitle1),
                   ],
                 ),
               ),
@@ -214,7 +214,7 @@ class TodoWritePageState extends State<TodoWritePage> {
           else if(index == 4){
             return Container(
               margin: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                 child: Text("메모", style: TextStyle(fontSize: 20),),
+                 child: Text("메모", style: Theme.of(context).textTheme.subtitle1,),
             );
           }
           else if(index == 5){
