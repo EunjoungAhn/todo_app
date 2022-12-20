@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // 기기의 폰트 사이즈에 의존하지 않게 설정
       builder: (context, child) => MediaQuery(
