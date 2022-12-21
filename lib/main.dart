@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
-      home: SearchScreen(),
-      //const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: //SearchScreen(),
+      const MyHomePage(title: 'Flutter Demo Home Page'),
       // 기기의 폰트 사이즈에 의존하지 않게 설정
       builder: (context, child) => MediaQuery(
         child: child,
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() { });
   }
 
-  // 오늘 날짜 기준의 투두들을 가져와라
+  // 모든 메모들을 가져와라
   void getAllTodo() async {
     allTodo = await dbHelper.getAllTodo();
     setState(() { });
@@ -149,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
+                   SearchScreen(),
                    /*
                    TextField(
                     //focusNode: ,

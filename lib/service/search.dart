@@ -1,4 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:todo_app/data/todo/todo.dart';
+import 'package:todo_app/data/todo/database.dart';
+import 'package:todo_app/main.dart';
+
+import '../write.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key key}) : super(key: key);
@@ -8,6 +15,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  StreamController<TodoCardWidget> streamController = StreamController<TodoCardWidget>();
   final TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode(); // 현재 검색 위젯에 커서가 있는지 상태 확인
   String _searchText = "";
@@ -21,6 +29,54 @@ class _SearchScreenState extends State<SearchScreen> {
         _searchText = _filter.text;
       });
     });
+  }
+
+  final dbHelper = DatabaseHelper.instance;
+
+  // 모든 메모들을 가져와라
+  void getAllTodo() async {
+    allTodo = await dbHelper.getAllTodo();
+    setState(() { });
+  }
+
+  // 전체 기록을 가져오는 리스트
+  List<Todo> allTodo = [];
+
+  Widget _buildBody(BuildContext context){
+    return StreamBuilder(
+        stream: streamController.stream,
+        builder: (context, snapshot) {
+          if(!snapshot.hasData) return LinearProgressIndicator();
+          return _buildList(context, snapshot.data);
+        },
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<Todo> todoList){
+    List<Todo> searchResults = [];
+    // 데이터에 검색 키워드가 있는지 필터링으로 리스트를 생성
+    for(Todo t in todoList){
+      if(t.date.toString().contains(_searchText)){
+        searchResults.add(t);
+      }
+    }
+    // 데이터가 채워졌다면 위젯 반환
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return InkWell(
+          child: TodoCardWidget(t: allTodo[index]),
+          onTap: () async {
+            // 화면 이동하기
+            Todo todo = await Navigator.of(context).push(
+              // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                MaterialPageRoute(builder: (context) => TodoWritePage(
+                    todo: allTodo[index])));
+            getAllTodo();
+          },
+        );
+      },
+      itemCount: allTodo.length,
+    );
   }
 
   @override
@@ -65,6 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       )
                           : Container(),
                       hintText: '검색',
+                      border: InputBorder.none,
                       labelStyle: TextStyle(color: Colors.white),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.transparent),
@@ -96,6 +153,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
+          _buildBody(context),
         ],
       ),
     );
