@@ -4,6 +4,7 @@ import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/service/notification_service.dart';
+import 'package:todo_app/service/search.dart';
 import 'package:todo_app/write.dart';
 import 'components/app_themes.dart';
 import 'data/todo/todo.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SearchScreen(),
+      //const MyHomePage(title: 'Flutter Demo Home Page'),
       // 기기의 폰트 사이즈에 의존하지 않게 설정
       builder: (context, child) => MediaQuery(
         child: child,
@@ -147,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
+                   /*
                    TextField(
                     //focusNode: ,
                     keyboardType: TextInputType.text,
@@ -165,6 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       fillColor: Color(0xffFFFFFF),
                     ),
                   ),
+                    */
               SizedBox(height: 15),
               Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
