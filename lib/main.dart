@@ -50,11 +50,10 @@ class MyHomePage extends StatefulWidget {
  List<Todo> todos = [];
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController searchController = TextEditingController();
 
   final dbHelper = DatabaseHelper.instance;
   int selectIndex = 0;
-
-
 
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
@@ -110,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.today_outlined),
-            label: "오늘",
+            label: "TODO",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment_outlined),
@@ -145,7 +144,31 @@ class _MyHomePageState extends State<MyHomePage> {
       itemBuilder: (context, index) {
         if(index == 0){
           return Container(
-            child: Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   TextField(
+                    //focusNode: ,
+                    keyboardType: TextInputType.text,
+                    onChanged: (text){
+                      //_streamSearch.add(text);
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: "검색",
+                      border: InputBorder.none,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderSide: BorderSide(color: Color(0xffa6b9c0)),
+                      ),
+                      filled: true,
+                      fillColor: Color(0xffFFFFFF),
+                    ),
+                  ),
+              SizedBox(height: 15),
+              Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ],
+            ),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 1){
