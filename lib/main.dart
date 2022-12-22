@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false, // 디버그 배너삭제
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       home: //SearchScreen(),
