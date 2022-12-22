@@ -150,28 +150,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   SearchScreen(),
-                   /*
-                   TextField(
-                    //focusNode: ,
-                    keyboardType: TextInputType.text,
-                    onChanged: (text){
-                      //_streamSearch.add(text);
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: "검색",
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(color: Color(0xffa6b9c0)),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xffFFFFFF),
-                    ),
-                  ),
-                    */
-              SizedBox(height: 15),
+                   SizedBox(height: 400,
+                    child: SearchScreen(),
+                   ),
+              SizedBox(height: 15), // 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
               Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),

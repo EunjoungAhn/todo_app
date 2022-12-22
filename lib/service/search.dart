@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/todo.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/main.dart';
-
-import '../write.dart';
+import 'package:todo_app/write.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key key}) : super(key: key);
@@ -15,7 +15,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  StreamController<TodoCardWidget> streamController = StreamController<TodoCardWidget>();
+  StreamController<_SearchScreenState> streamController = StreamController<_SearchScreenState>();
   final TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode(); // 현재 검색 위젯에 커서가 있는지 상태 확인
   String _searchText = "";
@@ -42,13 +42,14 @@ class _SearchScreenState extends State<SearchScreen> {
   // 전체 기록을 가져오는 리스트
   List<Todo> allTodo = [];
 
-  Widget _buildBody(BuildContext context){
-    return StreamBuilder(
-        stream: streamController.stream,
-        builder: (context, snapshot) {
-          if(!snapshot.hasData) return LinearProgressIndicator();
-          return _buildList(context, snapshot.data);
-        },
+   Widget _buildBody(BuildContext context){
+    return FutureBuilder(
+      future: DatabaseHelper.instance.getAllTodo(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<Todo>> snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+        return _buildList(context, snapshot.data);
+      },
     );
   }
 
@@ -56,28 +57,44 @@ class _SearchScreenState extends State<SearchScreen> {
     List<Todo> searchResults = [];
     // 데이터에 검색 키워드가 있는지 필터링으로 리스트를 생성
     for(Todo t in todoList){
-      if(t.date.toString().contains(_searchText)){
+      if(t.title.toString().contains(_searchText)){
         searchResults.add(t);
       }
     }
-    // 데이터가 채워졌다면 위젯 반환
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return InkWell(
-          child: TodoCardWidget(t: allTodo[index]),
-          onTap: () async {
-            // 화면 이동하기
-            Todo todo = await Navigator.of(context).push(
-              // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
-                MaterialPageRoute(builder: (context) => TodoWritePage(
-                    todo: allTodo[index])));
-            getAllTodo();
+    return
+      Expanded(
+          child:
+          ListView.builder(
+          itemBuilder: (context, index) {
+            return InkWell(
+              child: TodoCardWidget(t: searchResults[index]),
+              onTap: () async {
+                // 화면 이동하기
+                Todo todo = await Navigator.of(context).push(
+                  // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                    MaterialPageRoute(builder: (context) => TodoWritePage(
+                        todo: searchResults[1])));
+                getAllTodo();
+              },
+              onLongPress: () {
+                showModalBottomSheet(context: context,
+                  builder: (context) => MoreActionBottomSheet(
+                    onPressedDelete: () {
+                      dbHelper.deleteTodo(searchResults[index].id);
+                      Navigator.pop(context);
+                      setState(() {
+                        getAllTodo();
+                      });
+                    },
+                  ),
+                );
+              }, // onTap
+            );
           },
-        );
-      },
-      itemCount: allTodo.length,
-    );
-  }
+          itemCount: searchResults.length,
+        ),
+      );
+    }
 
   @override
   Widget build(BuildContext context) {
