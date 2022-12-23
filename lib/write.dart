@@ -26,7 +26,14 @@ class TodoWritePageState extends State<TodoWritePage> {
 
   final dbHelper = DatabaseHelper.instance;
 
-  int colorIndex = 0;
+  double _seleteColor = 0;
+  List<Color> colors = [
+    Color(0xFF80d3f4),
+    Color(0xFFa794fa),
+    Color(0xFFfb91d1),
+    Color(0xFF51e29d),
+  ];
+
   int alarmId = 0;
 
   // 시간 포맷 패키지로 포맷하기
@@ -101,39 +108,113 @@ class TodoWritePageState extends State<TodoWritePage> {
             );
           }
           else if(index == 2){
-            return InkWell(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("색상", style: Theme.of(context).textTheme.subtitle1,),
-                    Container(
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InkWell(
+                    child: Container(
                       width: 20,
                       height: 20,
-                      color: Color(widget.todo.color), // widget. 하면 내 위의 StatefulWidget에 선언된 값을 가져올 수 있다.
-                    )
-                  ],
-                ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: colors[0].value == widget.todo.color ? Color(0xFF80d3f4) : Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors[0].value == widget.todo.color ? Colors.grey.withOpacity(_seleteColor) : Color(0xFF80d3f4),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            )
+                          ]
+                      ),
+                      // Color(0xFF80d3f4),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        widget.todo.color = colors[0].value;
+                      });
+                    },
+                  ),
+                  InkWell(
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: colors[1].value == widget.todo.color ? Color(0xFFa794fa) : Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors[1].value == widget.todo.color ? Colors.grey.withOpacity(_seleteColor) : Color(0xFFa794fa),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            )
+                          ]
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        widget.todo.color = colors[1].value;
+                        BoxShadow(
+                          color: colors[1].value == widget.todo.color ? Colors.grey.withOpacity(_seleteColor) : Color(0xFFa794fa),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        );
+                      });
+                    },
+                  ),
+                  InkWell(
+                    hoverColor: Colors.red,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: colors[2].value == widget.todo.color ? Color(0xFFfb91d1) : Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors[2].value == widget.todo.color ? Colors.grey.withOpacity(_seleteColor) : Color(0xFFfb91d1),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            )
+                          ]
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        widget.todo.color = colors[2].value;
+                      });
+                    },
+                  ),
+                  InkWell(
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: colors[3].value == widget.todo.color ? Color(0xFF51e29d) : Color(0xFFFFFFFF),
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors[3].value == widget.todo.color ? Colors.grey.withOpacity(_seleteColor) : Color(0xFF51e29d),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            )
+                          ]
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        widget.todo.color = colors[3].value;
+                      });
+                    },
+                  ),
+                ],
               ),
-                onTap: () {
-                  List<Color> colors = [
-                    Color(0xFF80d3f4),
-                    Color(0xFFa794fa),
-                    Color(0xFFfb91d1),
-                    Color(0xFFfb8a94),
-                    Color(0xFFfebd9a),
-                    Color(0xFF51e29d),
-                    Color(0xFFFFFFFF),
-                  ];
-                  widget.todo.color = colors[colorIndex].value;
-
-                  colorIndex++;
-                  setState(() {
-                    // 해당 리스트의 길이로 나누면 인덱스를 순회한다.
-                    colorIndex = colorIndex % colors.length;
-                  });
-              },
             );
           }
           else if(index == 3){
