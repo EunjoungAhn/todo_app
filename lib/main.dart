@@ -51,11 +51,11 @@ class MyHomePage extends StatefulWidget {
 }
 // todo가 가지고 있는 여러 값을 가져오기 위해 변수 설정
  List<Todo> todos = [];
+ final dbHelper = DatabaseHelper.instance;
 
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController searchController = TextEditingController();
 
-  final dbHelper = DatabaseHelper.instance;
   int selectIndex = 0;
 
   // 오늘 날짜 기준의 투두들을 가져와라
@@ -267,6 +267,14 @@ class _MyHomePageState extends State<MyHomePage> {
             onLongPress: () {
               showModalBottomSheet(context: context,
                 builder: (context) => MoreActionBottomSheet(
+                  onPressedUpdate: ()  async {
+                    Todo todo = await Navigator.of(context).push(
+                      // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                        MaterialPageRoute(builder: (context) =>
+                            TodoWritePage(
+                                todo: allTodo[index])));
+                    setState(() { });
+                  },
                   onPressedDelete: () {
                     dbHelper.deleteTodo(allTodo[index].id);
                     Navigator.pop(context);
@@ -323,7 +331,17 @@ class TodoCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(t.title, style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold),),
-              Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
+              InkWell(
+                child: Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
+                onTap: () async {
+                    if(t.done == 0){
+                      t.done = 1;
+                    }else{
+                      t.done = 0;
+                    }
+                  await dbHelper.insertTodo(t);
+                },
+              ),
             ],
           ),
           Container(height: 8,),

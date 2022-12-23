@@ -61,8 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
         searchResults.add(t);
       }
     }
-    return
-      Expanded(
+    return Expanded(
           child:
           ListView.builder(
           itemBuilder: (context, index) {
@@ -154,17 +153,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 // 취소 버튼 처리
                 focusNode.hasFocus
                     ? Expanded(child:
-                TextButton(
-                  child: Text("취소"),
-                  onPressed: () {
-                    setState(() {
-                      _filter.clear();
-                      _searchText = "";
-                      focusNode.unfocus();
-                    });
-                  },
-                ),
-                )
+                        TextButton(
+                          child: Text("취소"),
+                          onPressed: () {
+                            setState(() {
+                              _filter.clear();
+                              _searchText = "";
+                              focusNode.unfocus();
+                            });
+                          },
+                        ),
+                      )
                     : Expanded(flex: 0, child: Container(),
                 )
               ],
