@@ -111,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: TextField(
                     focusNode: focusNode,
                     style: TextStyle(fontSize: 15),
-                    autofocus: true,
+                    autofocus: false,
                     controller: _filter,
                     decoration: InputDecoration(
                       filled: true,

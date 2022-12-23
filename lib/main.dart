@@ -61,7 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
     todos = await dbHelper.getTodoByDate(Utils.getFormatTime(DateTime.now()));
-    setState(() { });
+    setState(() {
+      getTodayTodo();
+    });
   }
 
   // 모든 메모들을 가져와라
@@ -255,15 +257,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return ListView.builder(
         itemBuilder: (context, index) {
           return InkWell(
-              child: TodoCardWidget(t: allTodo[index]),
-            onTap: () async {
-              // 화면 이동하기
-              Todo todo = await Navigator.of(context).push(
-                // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
-                  MaterialPageRoute(builder: (context) => TodoWritePage(
-                      todo: allTodo[index])));
-              getAllTodo();
-            },
+            child: TodoCardWidget(t: allTodo[index]),
+              onTap: () async {
+                setState(() {
+                  if(allTodo[index].done == 0){
+                    allTodo[index].done = 1;
+                  }else{
+                    allTodo[index].done = 0;
+                  }
+                });
+                await dbHelper.insertTodo(allTodo[index]);
+              },
             onLongPress: () {
               showModalBottomSheet(context: context,
                 builder: (context) => MoreActionBottomSheet(
@@ -331,17 +335,7 @@ class TodoCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(t.title, style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold),),
-              InkWell(
-                child: Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
-                onTap: () async {
-                    if(t.done == 0){
-                      t.done = 1;
-                    }else{
-                      t.done = 0;
-                    }
-                  await dbHelper.insertTodo(t);
-                },
-              ),
+              Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
             ],
           ),
           Container(height: 8,),
