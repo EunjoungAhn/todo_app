@@ -149,13 +149,18 @@ class _SearchScreenState extends State<SearchScreen> {
                           MaterialPageRoute(builder: (context) =>
                               TodoWritePage(
                                   todo: searchResults[index])));
-                      setState(() { });
+                      setState(() {
+                        // 제거할 화면이 있으면 제거해줘
+                        Navigator.maybePop(context);
+                      });
                       print(searchResults[index]);
                     },
                     onPressedDelete: () {
                       dbHelper.deleteTodo(searchResults[index].id);
                       Navigator.pop(context);
                       setState(() {
+                        // 제거할 화면이 있으면 제거해줘
+                        Navigator.maybePop(context);
                         getAllTodo();
                       });
                     },
