@@ -39,6 +39,7 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() { });
   }
 
+  /*
   void showPopup(context, title, memo){
     showDialog(
         context: context,
@@ -46,17 +47,44 @@ class _SearchScreenState extends State<SearchScreen> {
           // 팝업창 구성하기
           return Dialog(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.7, //디바이스 너비의 70%를 컨테이너가 사용
-              height: 380,
+              width: 200,
+              // MediaQuery.of(context).size.width * 0.7, //디바이스 너비의 70%를 컨테이너가 사용
+              height: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  SizedBox(height: 10,),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black45,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      memo,
+                      maxLines: 12,
+                      style: TextStyle(
+                        fontSize: 8,
+                        color: Colors.black45,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
               ),
             ),
           );
         },
     );
   }
+   */
 
   // 전체 기록을 가져오는 리스트
   List<Todo> allTodo = [];
@@ -87,7 +115,11 @@ class _SearchScreenState extends State<SearchScreen> {
             return InkWell(
               child: TodoCardWidget(t: searchResults[index]),
               onTap: () async {
+
+                /*
                 showPopup(context, searchResults[index].title, searchResults[index].memo);
+                 */
+
                 /*
                 // 수정 화면으로 이동
                 Todo todo = await Navigator.of(context).push(
@@ -95,8 +127,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     MaterialPageRoute(builder: (context) => TodoWritePage(
                         todo: searchResults[1])));
                 getAllTodo();
-                
                  */
+
+                // 클릭시 완료, 미완료 처리 =
+                setState(() {
+                  if(searchResults[index].done == 0){
+                    searchResults[index].done = 1;
+                  }else{
+                    searchResults[index].done = 0;
+                  }
+                });
+                await dbHelper.insertTodo(searchResults[index]);
+
               },
               onLongPress: () {
                 showModalBottomSheet(context: context,
@@ -106,8 +148,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
                           MaterialPageRoute(builder: (context) =>
                               TodoWritePage(
-                                  todo: allTodo[index])));
+                                  todo: searchResults[index])));
                       setState(() { });
+                      print(searchResults[index]);
                     },
                     onPressedDelete: () {
                       dbHelper.deleteTodo(searchResults[index].id);

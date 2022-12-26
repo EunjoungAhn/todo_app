@@ -87,7 +87,7 @@ class TodoWritePageState extends State<TodoWritePage> {
 
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);
-            },
+ㅅ            },
           ),
         ],
       ),
