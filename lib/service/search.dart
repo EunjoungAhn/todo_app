@@ -78,6 +78,14 @@ class _SearchScreenState extends State<SearchScreen> {
               onLongPress: () {
                 showModalBottomSheet(context: context,
                   builder: (context) => MoreActionBottomSheet(
+                    onPressedUpdate: ()  async {
+                      Todo todo = await Navigator.of(context).push(
+                        // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                          MaterialPageRoute(builder: (context) =>
+                              TodoWritePage(
+                                  todo: allTodo[index])));
+                      setState(() { });
+                    },
                     onPressedDelete: () {
                       dbHelper.deleteTodo(searchResults[index].id);
                       Navigator.pop(context);

@@ -151,11 +151,14 @@ class _MyHomePageState extends State<MyHomePage> {
           return Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
+              children: [
+              /*
+              // 검색화면 주석 처리
                    SizedBox(height: 400,
                     child: SearchScreen(),
                    ),
               SizedBox(height: 15), // 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
+               */
               Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -254,7 +257,16 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Todo> allTodo = [];
 
   Widget getHistory(){
-    return ListView.builder(
+    return Column(
+      children: const [
+        SizedBox(height: 647,
+          child: SearchScreen(),
+        ),
+        SizedBox(height: 15), // 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
+      ],
+    );
+    /*
+      ListView.builder( // 기록 기록 화면 페이지
         itemBuilder: (context, index) {
           return InkWell(
             child: TodoCardWidget(t: allTodo[index]),
@@ -294,6 +306,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         itemCount: allTodo.length,
       );
+     */
   } // getHistory
 
 }
