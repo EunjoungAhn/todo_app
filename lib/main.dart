@@ -56,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController searchController = TextEditingController();
 
-  int selectIndex = 0;
+  int selectIndex = 0; // 네비게이션 변경되는 인덱스 넘버
 
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: AppBar(),
         preferredSize: Size.fromHeight(0),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: ![0].contains(selectIndex) ? Container() : FloatingActionButton(// 기록화면에서는 FAB 안보이게 설정
         child: Icon(Icons.add, color: Colors.white,),
         onPressed: () async {
           // 화면 이동하기
