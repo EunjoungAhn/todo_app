@@ -39,6 +39,25 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() { });
   }
 
+  void showPopup(context, title, memo){
+    showDialog(
+        context: context,
+        builder: (context) {
+          // 팝업창 구성하기
+          return Dialog(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7, //디바이스 너비의 70%를 컨테이너가 사용
+              height: 380,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+    );
+  }
+
   // 전체 기록을 가져오는 리스트
   List<Todo> allTodo = [];
 
@@ -68,12 +87,16 @@ class _SearchScreenState extends State<SearchScreen> {
             return InkWell(
               child: TodoCardWidget(t: searchResults[index]),
               onTap: () async {
-                // 화면 이동하기
+                showPopup(context, searchResults[index].title, searchResults[index].memo);
+                /*
+                // 수정 화면으로 이동
                 Todo todo = await Navigator.of(context).push(
                   // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
                     MaterialPageRoute(builder: (context) => TodoWritePage(
                         todo: searchResults[1])));
                 getAllTodo();
+                
+                 */
               },
               onLongPress: () {
                 showModalBottomSheet(context: context,
