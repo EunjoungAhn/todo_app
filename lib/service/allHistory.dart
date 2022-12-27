@@ -7,15 +7,15 @@ import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/write.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key key}) : super(key: key);
+class AllHistory extends StatefulWidget {
+  const AllHistory({Key key}) : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<AllHistory> createState() => _AllHistoryState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  StreamController<_SearchScreenState> streamController = StreamController<_SearchScreenState>();
+class _AllHistoryState extends State<AllHistory> {
+  StreamController<_AllHistoryState> streamController = StreamController<_AllHistoryState>();
   final TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode(); // 현재 검색 위젯에 커서가 있는지 상태 확인
   String _searchText = "";
@@ -23,7 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   /* 상태관리 - 검색 위젯을 컨트롤하는 _filter가 변화를 감지하여
   _searchText의 상태를 변화시키는 코드
    */
-  _SearchScreenState(){
+  _AllHistoryState(){
     _filter.addListener(() {
       setState(() {
         _searchText = _filter.text;
@@ -39,53 +39,6 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() { });
   }
 
-  /*
-  void showPopup(context, title, memo){
-    showDialog(
-        context: context,
-        builder: (context) {
-          // 팝업창 구성하기
-          return Dialog(
-            child: Container(
-              width: 200,
-              // MediaQuery.of(context).size.width * 0.7, //디바이스 너비의 70%를 컨테이너가 사용
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: [
-                  SizedBox(height: 10,),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black45,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      memo,
-                      maxLines: 12,
-                      style: TextStyle(
-                        fontSize: 8,
-                        color: Colors.black45,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-    );
-  }
-   */
-
   // 전체 기록을 가져오는 리스트
   List<Todo> allTodo = [];
 
@@ -95,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
       builder: (BuildContext context,
           AsyncSnapshot<List<Todo>> snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _searchText.isEmpty ? RecordPage() : _buildList(context, snapshot.data);
+        return _buildList(context, snapshot.data);
       },
     );
   }
