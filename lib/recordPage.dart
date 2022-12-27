@@ -45,12 +45,12 @@ class _RecordPageState extends State<RecordPage> {
   @override
   Widget build(BuildContext context) {
     // where 반복문 같은 것
-    List<Todo> undone = todos.where((element) {
+    List<Todo> undone = allTodo.where((element) {
       // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
       return element.done == 0;
     }).toList();
 
-    List<Todo> done = todos.where((element) {
+    List<Todo> done = allTodo.where((element) {
       return element.done == 1;
     }).toList();
 
