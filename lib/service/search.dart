@@ -95,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
       builder: (BuildContext context,
           AsyncSnapshot<List<Todo>> snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _buildList(context, snapshot.data);
+        return _searchText.isEmpty ? Container() : _buildList(context, snapshot.data);
       },
     );
   }
