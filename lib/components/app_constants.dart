@@ -31,7 +31,8 @@ Color txtColor = Colors.black;
 Color iTxtColor = Colors.black38;
 
 /// 카드 박스 사이즈
-double cardSize = 150;
+double cardSizeSmall = 100;
+double cardSizeRegular = 150;
 
 /// 글자 크기
 TextStyle smallTS = TextStyle(fontSize: 12);

@@ -20,65 +20,174 @@ class _RecordPageState extends State<RecordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children : [
-          Container(
-            height: cardSize,
-            width: cardSize,
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 4,
-                      spreadRadius: 4,
-                      color: Colors.black12
-                  )
-                ]
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${allTodo.length}", style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-                ),),
-              ],
-            ),
-          ),
-          Container(
-            height: cardSize,
-            width: cardSize,
-            margin: EdgeInsets.all(8),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: 4,
-                      spreadRadius: 4,
-                      color: Colors.black12
-                  )
-                ]
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${allTodo.length}", style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold
-                ),),
-              ],
-            ),
-          ),
-        ]
-      ),
-      height: cardSize,
-      width: cardSize,
+    return Column(
+      children : [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children : [
+              Container(
+                height: cardSizeSmall,
+                width: cardSizeRegular,
+                margin: EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                          color: Colors.black12
+                      )
+                    ]
+                ),
+                child: Column(
+                  children : [
+                    SizedBox(height: 5,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //Image.asset("assets/img/todo.png", width: 45, height: 45,),
+                        Icon(Icons.access_time_rounded),
+                        SizedBox(width: 55,),
+                        Text("${allTodo.length}", style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text("TODO", style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)
+                    ),
+                  ], 
+                ),
+              ),
+              SizedBox(width: 15,),
+              Container(
+                height: cardSizeSmall,
+                width: cardSizeRegular,
+                margin: EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                          color: Colors.black12
+                      )
+                    ]
+                ),
+                child: Column(
+                  children : [
+                    SizedBox(height: 5,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_chart_rounded),
+                        SizedBox(width: 55,),
+                        Text("${allTodo.length}", style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text("전체", style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)
+                    ),
+                  ],
+                ),
+              ),
+            ]
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children : [
+              Container(
+                height: cardSizeSmall,
+                width: cardSizeRegular,
+                margin: EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                          color: Colors.black12
+                      )
+                    ]
+                ),
+                child: Column(
+                  children : [
+                    SizedBox(height: 5,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_box_outlined),
+                        SizedBox(width: 55,),
+                        Text("${allTodo.length}", style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text("미완료", style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 15,),
+              Container(
+                height: cardSizeSmall,
+                width: cardSizeRegular,
+                margin: EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                          color: Colors.black12
+                      )
+                    ]
+                ),
+                child: Column(
+                  children : [
+                    SizedBox(height: 5,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_box),
+                        SizedBox(width: 55,),
+                        Text("${allTodo.length}", style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold
+                        ),),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text("완료", style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold)
+                    ),
+                  ],
+                ),
+              ),
+            ]
+        ),
+      ],
     );
   }
 }
