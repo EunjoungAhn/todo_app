@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/RecordPage.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/service/notification_service.dart';
 import 'package:todo_app/service/search.dart';
 import 'package:todo_app/write.dart';
+import 'components/app_constants.dart';
 import 'components/app_themes.dart';
 import 'data/todo/todo.dart';
 
@@ -144,6 +146,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // where 반복문 같은 것
+  List<Todo> undone = todos.where((element) {
+    // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
+    return element.done == 0;
+  }).toList();
+
+  List<Todo> done = todos.where((element) {
+    return element.done == 1;
+  }).toList();
+
   Widget getMain(){
    return ListView.builder(
       itemBuilder: (context, index) {
@@ -165,13 +177,6 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 1){
-
-          // where 반복문 같은 것
-          List<Todo> undone = todos.where((element) {
-            // 리스트 값의 done이 완료(0)인 애들만 찾아 달라
-            return element.done == 0;
-          }).toList();
-
           return Container(
             child: Column(
               // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
@@ -210,11 +215,6 @@ class _MyHomePageState extends State<MyHomePage> {
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 3){
-
-          List<Todo> done = todos.where((element) {
-            return element.done == 1;
-          }).toList();
-
           return Container(
             child: Column(
               // List.generate 어떤 리스트를 어떻게 만들기 (리스트의 길이 설정, 리스트의 인덱스)
@@ -246,7 +246,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         }
-
         return Container();
       },
       itemCount: 4,
@@ -358,4 +357,3 @@ class TodoCardWidget extends StatelessWidget {
     );
   }
 }
-

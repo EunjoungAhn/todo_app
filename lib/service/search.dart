@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:todo_app/RecordPage.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/todo.dart';
 import 'package:todo_app/data/todo/database.dart';
@@ -95,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
       builder: (BuildContext context,
           AsyncSnapshot<List<Todo>> snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _searchText.isEmpty ? Container() : _buildList(context, snapshot.data);
+        return _searchText.isEmpty ? RecordPage() : _buildList(context, snapshot.data);
       },
     );
   }
@@ -109,7 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     }
     return Expanded(
-          child:
+        child:
           ListView.builder(
           itemBuilder: (context, index) {
             return InkWell(
