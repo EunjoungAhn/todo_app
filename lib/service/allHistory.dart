@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:todo_app/recordPage.dart';
+import 'package:todo_app/RecordPage.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/todo.dart';
 import 'package:todo_app/data/todo/database.dart';
@@ -15,6 +15,8 @@ class AllHistory extends StatefulWidget {
 }
 
 class _AllHistoryState extends State<AllHistory> {
+  int selectIndex = 1; // 네비게이션 변경되는 인덱스 넘버
+
   StreamController<_AllHistoryState> streamController = StreamController<_AllHistoryState>();
   final TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode(); // 현재 검색 위젯에 커서가 있는지 상태 확인
@@ -129,80 +131,107 @@ class _AllHistoryState extends State<AllHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Column(
-        children: [
-          //Padding(padding: EdgeInsets.all(30)),
-          Container(
-            color: Color(0xffa6b9c0),
-            padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-            child: Row(
-              children: [
-                Expanded(
-                  flex:6,
-                  child: TextField(
-                    focusNode: focusNode,
-                    style: TextStyle(fontSize: 15),
-                    autofocus: false,
-                    controller: _filter,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xffa6b9c0),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.white60,
-                        size: 20,
-                      ),
-                      //뒤에 붙는 아이콘 - 클릭 했을때 캔슬 아이콘
-                      suffixIcon: focusNode.hasFocus
-                          ? IconButton(
-                        icon: Icon(
-                          Icons.cancel,
+    return Scaffold(
+      body: Material(
+        child: Column(
+          children: [
+            //Padding(padding: EdgeInsets.all(30)),
+            Container(
+              color: Color(0xffa6b9c0),
+              padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex:6,
+                    child: TextField(
+                      focusNode: focusNode,
+                      style: TextStyle(fontSize: 15),
+                      autofocus: false,
+                      controller: _filter,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xffa6b9c0),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.white60,
                           size: 20,
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _filter.clear();
-                            _searchText = "";
-                          });
-                        },
-                      )
-                          : Container(),
-                      hintText: '검색',
-                      border: InputBorder.none,
-                      labelStyle: TextStyle(color: Colors.white),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                    ),
-                  ),
-                ),
-                // 취소 버튼 처리
-                focusNode.hasFocus
-                    ? Expanded(child:
-                        TextButton(
-                          child: Text("취소"),
+                        //뒤에 붙는 아이콘 - 클릭 했을때 캔슬 아이콘
+                        suffixIcon: focusNode.hasFocus
+                            ? IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            size: 20,
+                          ),
                           onPressed: () {
                             setState(() {
                               _filter.clear();
                               _searchText = "";
-                              focusNode.unfocus();
                             });
                           },
+                        )
+                            : Container(),
+                        hintText: '검색',
+                        border: InputBorder.none,
+                        labelStyle: TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                      )
-                    : Expanded(flex: 0, child: Container(),
-                )
-              ],
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 취소 버튼 처리
+                  focusNode.hasFocus
+                      ? Expanded(child:
+                          TextButton(
+                            child: Text("취소"),
+                            onPressed: () {
+                              setState(() {
+                                _filter.clear();
+                                _searchText = "";
+                                focusNode.unfocus();
+                              });
+                            },
+                          ),
+                        )
+                      : Expanded(flex: 0, child: Container(),
+                  )
+                ],
+              ),
             ),
+            _buildBody(context),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.today_outlined),
+            label: "TODO",
           ),
-          _buildBody(context),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assessment_outlined),
+            label: "기록",
+          ),
         ],
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        currentIndex: selectIndex,
+        onTap: (index) {
+          // 항상 모든 리스트를 가져와라
+          if(index == 1){
+            Navigator.of(context).pop();
+          }else if(index == 0){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage(),));
+          }
+          setState(() {
+            selectIndex = index;
+          });
+        },
       ),
     );
   }

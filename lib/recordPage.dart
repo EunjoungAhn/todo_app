@@ -30,7 +30,9 @@ class _RecordPageState extends State<RecordPage> {
   // 모든 메모들을 가져와라
   void getAllTodo() async {
     allTodo = await dbHelper.getAllTodo();
-    setState(() {});
+    setState(() {
+      getAllTodo();
+    });
   }
 
   @override
