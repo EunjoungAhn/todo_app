@@ -28,7 +28,7 @@ class AppNotificationService {
       requestBadgePermission: false,
       requestSoundPermission: false,
     );
-    
+
     // 안드로이드 ios 초기화 담기
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -141,6 +141,14 @@ class AppNotificationService {
       await notification.cancel(id);
     }
     log('[after delete notification list] ${await pendingNotificationIds}');
+  }
+
+  // 단일 알림 삭제 매서드
+  Future<void> deleteAlarm(String alarmId) async {
+    //log('[before delete notification list] ${await pendingNotificationIds}');
+    final id = int.parse(alarmId);
+    await notification.cancel(id);
+    //log('[after delete notification list] ${await pendingNotificationIds}');
   }
 
   Future<List<int>> get pendingNotificationIds {
