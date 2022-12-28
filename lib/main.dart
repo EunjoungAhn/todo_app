@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/database.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/service/notification_service.dart';
@@ -189,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                     await dbHelper.insertTodo(t);
                   },
+                  /*
                   onLongPress: () async {
                     // 화면 이동하기
                     Todo todo = await Navigator.of(context).push(
@@ -196,6 +198,33 @@ class _MyHomePageState extends State<MyHomePage> {
                         MaterialPageRoute(builder: (context) => TodoWritePage(
                             todo: t)));
                     getTodayTodo();
+                  },
+
+                   */
+                  onLongPress: () {
+                    showModalBottomSheet(context: context,
+                      builder: (context) => MoreActionBottomSheet(
+                        onPressedUpdate: ()  async {
+                          Todo todo = await Navigator.of(context).push(
+                            // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                              MaterialPageRoute(builder: (context) =>
+                                  TodoWritePage(
+                                      todo: todos[index])));
+                          setState(() {
+                            // 제거할 화면이 있으면 제거해줘
+                            Navigator.maybePop(context);
+                          });
+                        },
+                        onPressedDelete: () {
+                          dbHelper.deleteTodo(todos[index].id);
+                          Navigator.pop(context);
+                          setState(() {
+                            // 제거할 화면이 있으면 제거해줘
+                            getTodayTodo();
+                          });
+                        },
+                      ),
+                    );
                   },
                 );
               }),
