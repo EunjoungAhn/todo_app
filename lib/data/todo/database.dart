@@ -4,7 +4,7 @@ import 'package:todo_app/data/todo/todo.dart';
 
 class DatabaseHelper {
   static final _databaseName = "todo.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 1;
   static final todoTable = "todo";
 
   DatabaseHelper._privateConstructor();
@@ -42,7 +42,7 @@ class DatabaseHelper {
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {}
-  
+
   // 투두 입력, 수정, 불러오기
   Future<int> insertTodo(Todo todo) async {
     Database db = await instance.database;
@@ -87,14 +87,14 @@ class DatabaseHelper {
     // 투두 리스트에 다 담아주고
     for(var q in queries){
       todos.add(Todo(
-        id: q["id"],
         title: q["title"],
-        date: q["date"],
-        done: q["done"],
         memo: q["memo"],
         time: q["time"],
+        //alarmKey: q["alarmKey"],
+        id: q["id"],
+        date: q["date"],
+        done: q["done"],
         color: q["color"],
-        alarmKey: q["alarmKey"],
       ));
     }
 
@@ -112,16 +112,38 @@ class DatabaseHelper {
     // 투두 리스트에 다 담아주고
     for(var q in queries){
       todos.add(Todo(
-        id: q["id"],
         title: q["title"],
-        date: q["date"],
-        done: q["done"],
         memo: q["memo"],
         time: q["time"],
+        //alarmKey: q["alarmKey"],
+        id: q["id"],
+        date: q["date"],
+        done: q["done"],
         color: q["color"],
       ));
     }
+    /*
+    // dogs 테이블의 모든 dog를 얻는 메서드
+    Future<List<Dog>> dogs() async {
+      // 데이터베이스 reference를 얻습니다.
+      final Database db = await database;
 
+      // 모든 Dog를 얻기 위해 테이블에 질의합니다.
+      final List<Map<String, dynamic>> maps = await db.query('dogs');
+
+      // List<Map<String, dynamic>를 List<Dog>으로 변환합니다.
+      return List.generate(maps.length, (i) {
+        return Dog(
+          id: maps[i]['id'],
+          name: maps[i]['name'],
+          age: maps[i]['age'],
+        );
+      });
+    }
+
+    // 이제, 모든 dog를 얻을 수 있는 위 메서드를 사용할 수 있습니다.
+    print(await dogs()); // Fido를 포함한 리스트를 출력합니다.
+     */
     return todos;
   }
 
