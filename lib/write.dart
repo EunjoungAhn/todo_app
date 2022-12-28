@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -5,8 +7,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:todo_app/components/app_constants.dart';
 import 'package:todo_app/components/app_widgets.dart';
 import 'package:todo_app/data/todo/database.dart';
-import 'package:todo_app/main.dart';
+import 'package:todo_app/service/notification_service.dart';
 import 'data/todo/todo.dart';
+
+final notification = AppNotificationService();
 
 class TodoWritePage extends StatefulWidget {
 
@@ -34,10 +38,9 @@ class TodoWritePageState extends State<TodoWritePage> {
     Color(0xFF51e29d),
   ];
 
-  int alarmId = 0;
-
   // 시간 포맷 패키지로 포맷하기
   String nowTime = DateFormat('HH:mm').format(DateTime.now());
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +48,8 @@ class TodoWritePageState extends State<TodoWritePage> {
     memoController.text = widget.todo.memo;
     nowTime = widget.todo.time;
   }
+
+  int alarmNum = Random().nextInt(1000)+1;
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +63,15 @@ class TodoWritePageState extends State<TodoWritePage> {
               // 페이지 저장시 사용
               widget.todo.title = nameController.text;
               widget.todo.memo = memoController.text;
+              widget.todo.alarmKey = alarmNum.toString() + nowTime.replaceAll(':', '');
               await dbHelper.insertTodo(widget.todo);
 
               //알림 등록
               final result = await notification.addNotifcication(
+                id: alarmNum,
                 alarmTimeStr: nowTime,
                 title: "${nameController.text}",
                 body: "자세한 내용은 앱에서 확인해주세요!",
-                id: alarmId + 1,
                 );
 
                 if(!result){
@@ -87,6 +93,7 @@ class TodoWritePageState extends State<TodoWritePage> {
 
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);
+                print("알람 등록: ${widget.todo.alarmKey}");
             },
           ),
         ],
