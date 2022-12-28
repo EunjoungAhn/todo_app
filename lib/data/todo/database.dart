@@ -4,7 +4,7 @@ import 'package:todo_app/data/todo/todo.dart';
 
 class DatabaseHelper {
   static final _databaseName = "todo.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 2;
   static final todoTable = "todo";
 
   DatabaseHelper._privateConstructor();
@@ -35,7 +35,8 @@ class DatabaseHelper {
       title String,
       memo String,
       color INTEGER,
-      time String
+      time String,
+      alarmKey String
     )
     ''');
   }
@@ -54,7 +55,8 @@ class DatabaseHelper {
         "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
-        "time": todo.time
+        "time": todo.time,
+        "alarmKey": todo.alarmKey
       };
       // map 구조를 데이터 베이스에 넣기
       return await db.insert(todoTable, row);
@@ -65,7 +67,8 @@ class DatabaseHelper {
         "done": todo.done,
         "memo": todo.memo,
         "color": todo.color,
-        "time": todo.time
+        "time": todo.time,
+        "alarmKey": todo.alarmKey
       };
       // 해당 아이디어의 정보를 수정, 없으면 새로운 아이디를 위가하여 위의 코드를 실행
       return await db.update(todoTable, row, where: "id = ?", whereArgs: [todo.id]);
@@ -91,6 +94,7 @@ class DatabaseHelper {
         memo: q["memo"],
         time: q["time"],
         color: q["color"],
+        alarmKey: q["alarmKey"],
       ));
     }
 
