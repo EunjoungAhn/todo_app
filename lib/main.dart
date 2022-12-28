@@ -258,10 +258,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getHistory(){
     return Column(
       children: const [
-        SizedBox(height: 647,
+        Expanded(// 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
           child: SearchScreen(),
         ),
-        SizedBox(height: 15), // 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
       ],
     );
     /*
