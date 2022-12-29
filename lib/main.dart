@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/database.dart';
@@ -6,8 +7,8 @@ import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/service/notification_service.dart';
 import 'package:todo_app/service/search.dart';
 import 'package:todo_app/write.dart';
-import 'components/app_themes.dart';
-import 'data/todo/todo.dart';
+import 'package:todo_app/components/app_themes.dart';
+import 'package:todo_app/data/todo/todo.dart';
 
 final notification = AppNotificationService();
 
@@ -56,7 +57,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController searchController = TextEditingController();
 
-  int selectIndex = 0; // 네비게이션 변경되는 인덱스 넘버
+  int selectIndex = 0;
+
+  _MyHomePageState(); // 네비게이션 변경되는 인덱스 넘버
 
   // 오늘 날짜 기준의 투두들을 가져와라
   void getTodayTodo() async {
@@ -102,7 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   memo: "",
                   done: 0,
                   time: nowTime,
-                  date: Utils.getFormatTime(DateTime.now())
+                  date: Utils.getFormatTime(DateTime.now()),
+                  alarmKey: 0,
                 ))));
 
           // 새로 추가된 리스트 화면에 적용하기
@@ -143,6 +147,16 @@ class _MyHomePageState extends State<MyHomePage> {
       return getHistory();
     }
   }
+
+  // 알림 전체 삭제
+  Future<void> cancelAllNotification() async {
+    await FlutterLocalNotificationsPlugin().cancelAll();
+  }
+  // 알림 단일 삭제
+  Future<void> cancelNotification(id) async {
+    await FlutterLocalNotificationsPlugin().cancel(id);
+  }
+
 
   Widget getMain(){
    return ListView.builder(
@@ -205,6 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     showModalBottomSheet(context: context,
                       builder: (context) => MoreActionBottomSheet(
                         onPressedUpdate: ()  async {
+                          cancelNotification(todos[index].alarmKey);
                           Todo todo = await Navigator.of(context).push(
                             // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
                               MaterialPageRoute(builder: (context) =>
@@ -217,9 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         onPressedDelete: () {
                           dbHelper.deleteTodo(todos[index].id);
-                          Navigator.pop(context);
+                          cancelNotification(todos[index].alarmKey);
                           setState(() {
                             // 제거할 화면이 있으면 제거해줘
+                            Navigator.pop(context);
                             getTodayTodo();
                           });
                         },
@@ -230,8 +246,8 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
             ),
           );
-        }
 
+        }
         else if(index == 2){
           return Container(
             child: Text("Check", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
@@ -366,6 +382,9 @@ class TodoCardWidget extends StatelessWidget {
               ),
               SizedBox(width: 20,),
               Text(t.time,
+                style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+              ),
+              Text("alarmKey:${t.alarmKey}",
                 style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
               ),
             ],

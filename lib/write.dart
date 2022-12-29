@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +39,6 @@ class TodoWritePageState extends State<TodoWritePage> {
 
   // 시간 포맷 패키지로 포맷하기
   String nowTime = DateFormat('HH:mm').format(DateTime.now());
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +47,7 @@ class TodoWritePageState extends State<TodoWritePage> {
     nowTime = widget.todo.time;
   }
 
-  int alarmNum = Random().nextInt(1000)+1;
+  int alarmNum = Random().nextInt(9999);
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +58,6 @@ class TodoWritePageState extends State<TodoWritePage> {
           TextButton(
             child: Text("저장", style: Theme.of(context).textTheme.subtitle1,),
             onPressed: () async {
-              // 페이지 저장시 사용
-              widget.todo.title = nameController.text;
-              widget.todo.memo = memoController.text;
-              widget.todo.alarmKey = alarmNum.toString() + nowTime.replaceAll(':', '');
-              await dbHelper.insertTodo(widget.todo);
-
               //알림 등록
               final result = await notification.addNotifcication(
                 id: alarmNum,
@@ -91,8 +83,15 @@ class TodoWritePageState extends State<TodoWritePage> {
                   );
                 }
 
+                // 페이지 저장시 사용
+                widget.todo.title = nameController.text;
+                widget.todo.memo = memoController.text;
+                widget.todo.alarmKey = alarmNum;
+                await dbHelper.insertTodo(widget.todo);
+
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);
+                print("alarmNum:${alarmNum}");
                 print("알람 등록: ${widget.todo.alarmKey}");
             },
           ),

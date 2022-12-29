@@ -9,7 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 final notification = FlutterLocalNotificationsPlugin();
 
 class AppNotificationService {
-  String alarmTimeId;
+  String alarmId;
   Future<void> initializeTimeZone() async {
     tz.initializeTimeZones();
     //final timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
@@ -38,9 +38,10 @@ class AppNotificationService {
       initializationSettings,
     );
   }
+
   // 알람 시간을 받아와서 스트링으로 변환
-  String alarmId(int alarmId, String alarmTime) {
-    return alarmId.toString() + alarmTime.replaceAll(':', '');
+  String alarmIdMethod(int alarmId) {
+    return alarmId.toString();
   }
 
   Future<bool> addNotifcication({
@@ -63,17 +64,17 @@ class AppNotificationService {
         : now.day;
 
     /// id
-    alarmTimeId = alarmId(id, alarmTimeStr);
+    alarmId = alarmIdMethod(id);
 
     /// add schedule notification
     final details = _notificationDetails(
-      alarmTimeId, // unique
+      alarmId, // unique
       title: title,
       body: body,
     );
 
     await notification.zonedSchedule(
-      int.parse(alarmTimeId), // unique
+      int.parse(alarmId), // unique
       title,
       body,
       tz.TZDateTime(
@@ -89,7 +90,7 @@ class AppNotificationService {
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
-      payload: alarmTimeId,
+      payload: alarmId,
     );
     log('[notification list] ${await pendingNotificationIds}');
 

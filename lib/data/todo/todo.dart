@@ -3,7 +3,7 @@ class Todo {
   String title;
   String memo;
   String time;
-  String alarmKey;
+  int alarmKey;
   int color;
   int done;
   int date;

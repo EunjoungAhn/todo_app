@@ -36,7 +36,7 @@ class DatabaseHelper {
       memo String,
       color INTEGER,
       time String,
-      alarmKey String
+      alarmKey INTEGER
     )
     ''');
   }
@@ -90,7 +90,7 @@ class DatabaseHelper {
         title: q["title"],
         memo: q["memo"],
         time: q["time"],
-        //alarmKey: q["alarmKey"],
+        alarmKey: q["alarmKey"],
         id: q["id"],
         date: q["date"],
         done: q["done"],
@@ -115,7 +115,7 @@ class DatabaseHelper {
         title: q["title"],
         memo: q["memo"],
         time: q["time"],
-        //alarmKey: q["alarmKey"],
+        alarmKey: q["alarmKey"],
         id: q["id"],
         date: q["date"],
         done: q["done"],
