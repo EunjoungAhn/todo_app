@@ -1,20 +1,19 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:intl/intl.dart';
-
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 final notification = FlutterLocalNotificationsPlugin();
 
 class AppNotificationService {
+  String alarmTimeId;
   Future<void> initializeTimeZone() async {
     tz.initializeTimeZones();
-    final timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName));
+    //final timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
   }
 
   Future<void> initializeNotification() async {
@@ -64,7 +63,7 @@ class AppNotificationService {
         : now.day;
 
     /// id
-    String alarmTimeId = alarmId(id, alarmTimeStr);
+    alarmTimeId = alarmId(id, alarmTimeStr);
 
     /// add schedule notification
     final details = _notificationDetails(
@@ -147,7 +146,7 @@ class AppNotificationService {
   Future<void> deleteAlarm(String alarmId) async {
     //log('[before delete notification list] ${await pendingNotificationIds}');
     final id = int.parse(alarmId);
-    await notification.cancel(id);
+    await notification.cancel(id, tag: "d");
     //log('[after delete notification list] ${await pendingNotificationIds}');
   }
 
