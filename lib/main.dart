@@ -277,6 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                     await dbHelper.insertTodo(t);
                   },
+                  /*
                   onLongPress: () async {
                     Todo todo = await Navigator.of(context).push(
                       // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
@@ -284,6 +285,34 @@ class _MyHomePageState extends State<MyHomePage> {
                             TodoWritePage(
                                 todo: t)));
                     setState(() { });
+                  },
+                   */
+                  onLongPress: () {
+                    showModalBottomSheet(context: context,
+                      builder: (context) => MoreActionBottomSheet(
+                        onPressedUpdate: ()  async {
+                          cancelNotification(todos[index].alarmKey);
+                          Todo todo = await Navigator.of(context).push(
+                            // 화면을 이동하면서 생성자에서 List를 값을 받는데 수정도 하기 위해 받는 것이다.
+                              MaterialPageRoute(builder: (context) =>
+                                  TodoWritePage(
+                                      todo: todos[index])));
+                          setState(() {
+                            // 제거할 화면이 있으면 제거해줘
+                            Navigator.maybePop(context);
+                          });
+                        },
+                        onPressedDelete: () {
+                          dbHelper.deleteTodo(todos[index].id);
+                          cancelNotification(todos[index].alarmKey);
+                          setState(() {
+                            // 제거할 화면이 있으면 제거해줘
+                            Navigator.pop(context);
+                            getTodayTodo();
+                          });
+                        },
+                      ),
+                    );
                   },
                 );
               }),
