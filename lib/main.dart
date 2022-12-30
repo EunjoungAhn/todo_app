@@ -393,7 +393,10 @@ class TodoCardWidget extends StatelessWidget {
     DateTime time = Utils.numToDateTime(t.date); // 실제 날자를 변경
 
     return Container(
-      decoration: BoxDecoration(
+      decoration: t.color == 0 ? BoxDecoration(
+          color: Color(0xFFdedede),
+          borderRadius: BorderRadius.circular(16)
+      ) : BoxDecoration(
           color: Color(t.color),
           borderRadius: BorderRadius.circular(16)
       ),
