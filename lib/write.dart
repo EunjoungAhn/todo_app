@@ -39,18 +39,26 @@ class TodoWritePageState extends State<TodoWritePage> {
 
   // 시간 포맷 패키지로 포맷하기
   String nowTime = DateFormat('HH:mm').format(DateTime.now());
+  bool isChecked = false; // 알림 등록 할지 안 할지 여부 확인
+  int alarmCheckNumBool = 1; // 0, 1 로 값 저장
+
   @override
   void initState() {
     super.initState();
     nameController.text = widget.todo.title;
     memoController.text = widget.todo.memo;
     nowTime = widget.todo.time;
+    alarmCheckNumBool = widget.todo.alarmCheck;
   }
 
   int alarmNum = Random().nextInt(9999);
 
   @override
   Widget build(BuildContext context) {
+    if(alarmCheckNumBool == 0){
+      isChecked = true;
+    }
+
     final initTime = DateFormat('HH:mm').parse(nowTime);
     return Scaffold(
       appBar: AppBar(
@@ -58,13 +66,15 @@ class TodoWritePageState extends State<TodoWritePage> {
           TextButton(
             child: Text("저장", style: Theme.of(context).textTheme.subtitle1,),
             onPressed: () async {
+
               //알림 등록
-              final result = await notification.addNotifcication(
-                id: alarmNum,
-                alarmTimeStr: nowTime,
-                title: "${nameController.text}",
-                body: "자세한 내용은 앱에서 확인해주세요!",
-                );
+              if(isChecked == true){
+                final result = await notification.addNotifcication(
+                  id: alarmNum,
+                  alarmTimeStr: nowTime,
+                  title: "${nameController.text}",
+                  body: "자세한 내용은 앱에서 확인해주세요!",
+                  );
 
                 if(!result){
                   // 알림 설정 확인
@@ -82,6 +92,8 @@ class TodoWritePageState extends State<TodoWritePage> {
                       )
                   );
                 }
+                widget.todo.alarmCheck = 0;
+              }
 
                 // 페이지 저장시 사용
                 widget.todo.title = ":"+nameController.text;
@@ -91,8 +103,7 @@ class TodoWritePageState extends State<TodoWritePage> {
 
               // 작성된 정보를 메인 페이지로 넘기면서 현재 화면 제거
               Navigator.of(context).pop(widget.todo);
-                print("alarmNum:${alarmNum}");
-                print("알람 등록: ${widget.todo.alarmKey}");
+                print(widget.todo.alarmCheck);
             },
           ),
         ],
@@ -225,78 +236,96 @@ class TodoWritePageState extends State<TodoWritePage> {
             );
           }
           else if(index == 3){
-            return InkWell(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("알림시간", style: Theme.of(context).textTheme.subtitle1),
-                    Text(nowTime, style: Theme.of(context).textTheme.subtitle1),
-                  ],
-                ),
-              ),
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return BottomSheetBody(
-                      children: [
-                        SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
-                          height: 200,
-                          child:
-                          CupertinoDatePicker(onDateTimeChanged: (dateTime) {
-                            nowTime = DateFormat('HH:mm').format(dateTime);
-                            print(nowTime);
-                          },
-                            mode: CupertinoDatePickerMode.time,
-                            initialDateTime: initTime,
-                          ),
-                        ),
-                        SizedBox(width: regularSpace),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: submitButtonHeight,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    textStyle: Theme.of(context).textTheme.subtitle1,
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: Colors.black,
-                                  ),
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("취소"),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: smallSpace),
-                            Expanded(
-                              child: SizedBox(
-                                height: submitButtonHeight,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
-                                  // pop을 할때 nowTime 데이터를 넘긴다.
-                                  onPressed: (){
-                                    setState(() {
-                                      Navigator.pop(context, nowTime);
-                                      widget.todo.time = nowTime;
-                                    });
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("알림시간", style: Theme.of(context).textTheme.subtitle1),
+                  isChecked ? Text(nowTime, style: Theme.of(context).textTheme.subtitle1) : Text(""),
+                  InkWell(
+                    child: Checkbox(
+                      value: isChecked,
+                      onChanged: (value) {
+                        showModalBottomSheet(
+                          isDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return BottomSheetBody(
+                              children: [
+                                SizedBox(// CupertinoDatePicker 타입을 표시하기 위해 높이를 지정해야 한다.
+                                  height: 200,
+                                  child:
+                                  CupertinoDatePicker(onDateTimeChanged: (dateTime) {
+                                    nowTime = DateFormat('HH:mm').format(dateTime);
+                                    print(nowTime);
                                   },
-                                  child: const Text("선택"),
+                                    mode: CupertinoDatePickerMode.time,
+                                    initialDateTime: initTime,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ).then((value) {
-                  if(value == null || value is! DateTime) return;
-                  nowTime;
-                });
-              },
+                                SizedBox(width: regularSpace),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: SizedBox(
+                                        height: submitButtonHeight,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            textStyle: Theme.of(context).textTheme.subtitle1,
+                                            backgroundColor: Colors.white,
+                                            foregroundColor: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              Navigator.pop(context);
+                                              isChecked = false;
+                                              widget.todo.alarmCheck = 1;
+                                              alarmCheckNumBool = 1;
+                                            });
+                                          },
+                                          child: const Text("취소"),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: smallSpace),
+                                    Expanded(
+                                      child: SizedBox(
+                                        height: submitButtonHeight,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(textStyle: Theme.of(context).textTheme.subtitle1),
+                                          // pop을 할때 nowTime 데이터를 넘긴다.
+                                          onPressed: (){
+                                            setState(() {
+                                              if(isChecked){
+                                                Navigator.pop(context, nowTime);
+                                                widget.todo.time = nowTime;
+                                                widget.todo.alarmCheck = 0;
+                                              }
+                                              isChecked = true;
+                                            });
+                                          },
+                                          child: const Text("선택"),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ).then((value) {
+                          if(value == null || value is! DateTime) return;
+                          nowTime;
+                        });
+                        setState(() {
+                          isChecked = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           else if(index == 4){

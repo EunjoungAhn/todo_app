@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   time: nowTime,
                   date: Utils.getFormatTime(DateTime.now()),
                   alarmKey: 0,
+                  alarmCheck: 1,
                 ))));
 
           // 새로 추가된 리스트 화면에 적용하기
@@ -413,9 +414,11 @@ class TodoCardWidget extends StatelessWidget {
                   style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)
               ),
               SizedBox(width: 20,),
+              t.alarmCheck == 0 ?
               Text(t.time,
                 style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
-              ),
+              ) :
+              Text(""),
             ],
           ),
           SizedBox(height: 5,),

@@ -33,6 +33,7 @@ class DatabaseHelper {
       date INTEGER DEFAULT 0,
       done INTEGER DEFAULT 0,
       title String,
+      alarmCheck INTEGER DEFAULT 0,
       memo String,
       color INTEGER,
       time String,
@@ -51,6 +52,7 @@ class DatabaseHelper {
       // 새로 추가, id는 자동 생성
       Map<String, dynamic> row = {
         "title": todo.title,
+        "alarmCheck": todo.alarmCheck,
         "date": todo.date,
         "done": todo.done,
         "memo": todo.memo,
@@ -63,6 +65,7 @@ class DatabaseHelper {
     }else{
       Map<String, dynamic> row = {
         "title": todo.title,
+        "alarmCheck": todo.alarmCheck,
         "date": todo.date,
         "done": todo.done,
         "memo": todo.memo,
@@ -88,6 +91,7 @@ class DatabaseHelper {
     for(var q in queries){
       todos.add(Todo(
         title: q["title"],
+        alarmCheck: q["alarmCheck"],
         memo: q["memo"],
         time: q["time"],
         alarmKey: q["alarmKey"],
@@ -113,6 +117,7 @@ class DatabaseHelper {
     for(var q in queries){
       todos.add(Todo(
         title: q["title"],
+        alarmCheck: q["alarmCheck"],
         memo: q["memo"],
         time: q["time"],
         alarmKey: q["alarmKey"],
