@@ -84,8 +84,8 @@ class TodoWritePageState extends State<TodoWritePage> {
                 }
 
                 // 페이지 저장시 사용
-                widget.todo.title = nameController.text;
-                widget.todo.memo = memoController.text;
+                widget.todo.title = ":"+nameController.text;
+                widget.todo.memo = ":"+memoController.text;
                 widget.todo.alarmKey = alarmNum;
                 await dbHelper.insertTodo(widget.todo);
 
@@ -109,6 +109,7 @@ class TodoWritePageState extends State<TodoWritePage> {
             return Container(
               child: TextField(
                 controller: nameController,
+                keyboardType: TextInputType.text,
               ),
               margin: EdgeInsets.symmetric(horizontal: 16),
             );
