@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.meime.todo_app">
+    package="com.behive.todo_app">
    <application
         android:label="메미"
         android:name="${applicationName}"
