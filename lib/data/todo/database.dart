@@ -105,7 +105,7 @@ class DatabaseHelper {
     return todos;
   }
 
-  // 해당 날짜의 투두 리스트를 전체 불러오는 기능
+  // 완료된 전체 투두 리스트를 전체 불러오는 기능
   Future<List<Todo>> getTodoByDate(int date) async {
     Database db = await instance.database;
     List<Todo> todos = [];
@@ -149,6 +149,58 @@ class DatabaseHelper {
     // 이제, 모든 dog를 얻을 수 있는 위 메서드를 사용할 수 있습니다.
     print(await dogs()); // Fido를 포함한 리스트를 출력합니다.
      */
+    return todos;
+  }
+
+  // 해당 날짜의 투두 리스트를 전체 불러오는 기능
+  Future<List<Todo>> getDoneAllTodo() async {
+    Database db = await instance.database;
+    List<Todo> todos = [];
+
+    // todoTable 있는 데이터를 다 가져와라
+    var queries = await db.query(todoTable, where: "done = 1");
+
+    // 투두 리스트에 다 담아주고
+    for(var q in queries){
+      todos.add(Todo(
+        title: q["title"],
+        alarmCheck: q["alarmCheck"],
+        memo: q["memo"],
+        time: q["time"],
+        alarmKey: q["alarmKey"],
+        id: q["id"],
+        date: q["date"],
+        done: q["done"],
+        color: q["color"],
+      ));
+    }
+
+    return todos;
+  }
+
+  // 미완료된 전체 투두 리스트를 전체 불러오는 기능
+  Future<List<Todo>> getUnDoneAllTodo() async {
+    Database db = await instance.database;
+    List<Todo> todos = [];
+
+    // todoTable 있는 데이터를 다 가져와라
+    var queries = await db.query(todoTable, where: "done = 0");
+
+    // 투두 리스트에 다 담아주고
+    for(var q in queries){
+      todos.add(Todo(
+        title: q["title"],
+        alarmCheck: q["alarmCheck"],
+        memo: q["memo"],
+        time: q["time"],
+        alarmKey: q["alarmKey"],
+        id: q["id"],
+        date: q["date"],
+        done: q["done"],
+        color: q["color"],
+      ));
+    }
+
     return todos;
   }
 

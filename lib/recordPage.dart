@@ -5,7 +5,9 @@ import 'package:todo_app/data/todo/todo.dart';
 import 'package:todo_app/data/todo/util.dart';
 import 'package:todo_app/main.dart';
 import 'package:todo_app/service/allHistory.dart';
+import 'package:todo_app/service/doneAllHistroy.dart';
 import 'package:todo_app/service/search.dart';
+import 'package:todo_app/service/unDoneAllHistroy.dart';
 
 class RecordPage extends StatefulWidget {
   final List<Todo> allTodo;
@@ -275,7 +277,7 @@ class _RecordPageState extends State<RecordPage> {
                             child: AppBar(),
                             preferredSize: Size.fromHeight(0),
                           ),
-                          body: AllHistory(),
+                          body: UnDoneAllHistory(),
                         ),
                       )
                   );
@@ -380,7 +382,7 @@ class _RecordPageState extends State<RecordPage> {
                             child: AppBar(),
                             preferredSize: Size.fromHeight(0),
                           ),
-                          body: AllHistory(),
+                          body: DoneAllHistory(),
                         ),
                       )
                   );
