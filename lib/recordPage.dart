@@ -170,7 +170,7 @@ class _RecordPageState extends State<RecordPage> {
                               child: AppBar(),
                               preferredSize: Size.fromHeight(0),
                             ),
-                            body: AllHistory(searchIndex: 0),
+                            body: AllHistory(),
                           ),
                       )
                   );
@@ -275,7 +275,7 @@ class _RecordPageState extends State<RecordPage> {
                             child: AppBar(),
                             preferredSize: Size.fromHeight(0),
                           ),
-                          body: AllHistory(searchIndex: 1),
+                          body: AllHistory(),
                         ),
                       )
                   );
@@ -380,7 +380,7 @@ class _RecordPageState extends State<RecordPage> {
                             child: AppBar(),
                             preferredSize: Size.fromHeight(0),
                           ),
-                          body: AllHistory(searchIndex: 2),
+                          body: AllHistory(),
                         ),
                       )
                   );
