@@ -53,6 +53,12 @@ class TodoWritePageState extends State<TodoWritePage> {
 
   int alarmNum = Random().nextInt(9999);
 
+  /*
+  String textFormat(List<String> t){
+    var textFormat = memoController.text.
+  }
+   */
+
   @override
   Widget build(BuildContext context) {
     if(alarmCheckNumBool == 0){
@@ -96,8 +102,8 @@ class TodoWritePageState extends State<TodoWritePage> {
               }
 
                 // 페이지 저장시 사용
-                widget.todo.title = ":"+nameController.text;
-                widget.todo.memo = ":"+memoController.text;
+                widget.todo.title = nameController.text;
+                widget.todo.memo = memoController.text;
                 widget.todo.alarmKey = alarmNum;
                 await dbHelper.insertTodo(widget.todo);
 
