@@ -9,7 +9,7 @@ class AppThemes {
     scaffoldBackgroundColor: Colors.white,
     splashColor: Colors.white,
     textTheme: _textTheme, //_textTheme을 바라보게 설정
-    appBarTheme: _appBarTheme,
+    appBarTheme: appBarTheme,
     brightness: Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
@@ -20,13 +20,13 @@ class AppThemes {
     fontFamily: 'GmarketSansTTF',
     splashColor: Colors.black,
     textTheme: _textDartTheme, //_textDartTheme을 바라보게 설정
-    appBarTheme: _appBarDarkTheme,
+    appBarTheme: appBarDarkTheme,
     brightness: Brightness.dark,
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
 // appBar 테마 만들기
-  static const AppBarTheme _appBarTheme = AppBarTheme(
+  static const AppBarTheme appBarTheme = AppBarTheme(
     backgroundColor: AppColors.primaryColor,
     iconTheme: IconThemeData(
       color: Colors.black,
@@ -36,7 +36,7 @@ class AppThemes {
   );
 
   // 다그모드 appBar 테마 만들기
-  static const AppBarTheme _appBarDarkTheme = AppBarTheme(
+  static const AppBarTheme appBarDarkTheme = AppBarTheme(
     backgroundColor: AppColors.primaryColor,
     iconTheme: IconThemeData(
       color: Colors.black,
