@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:todo_app/RecordPage.dart';
 import 'package:todo_app/components/more_bottomsheet.dart';
 import 'package:todo_app/data/todo/todo.dart';
 import 'package:todo_app/data/todo/database.dart';
@@ -137,7 +136,16 @@ class _AllHistoryState extends State<AllHistory> {
           children: [
             //Padding(padding: EdgeInsets.all(30)),
             Container(
-              color: Color(0xffa6b9c0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 10,
+                    offset: const Offset(0, 0),
+                    color: Colors.black.withOpacity(0.1),
+                  )
+                ],
+              ),
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
               child: Row(
                 children: [
@@ -150,10 +158,9 @@ class _AllHistoryState extends State<AllHistory> {
                       controller: _filter,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0xffa6b9c0),
+                        fillColor: Colors.white,
                         prefixIcon: Icon(
                           Icons.search,
-                          color: AppBarTheme.of(context).iconTheme.color,
                           size: 20,
                         ),
                         //뒤에 붙는 아이콘 - 클릭 했을때 캔슬 아이콘
@@ -189,7 +196,7 @@ class _AllHistoryState extends State<AllHistory> {
                   focusNode.hasFocus
                       ? Expanded(child:
                           TextButton(
-                            child: Text("취소"),
+                            child: Text("취소", style: TextStyle(fontWeight: FontWeight.bold),),
                             onPressed: () {
                               setState(() {
                                 _filter.clear();

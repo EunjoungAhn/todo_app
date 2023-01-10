@@ -101,7 +101,7 @@ class _RecordPageState extends State<RecordPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //Image.asset("assets/img/todo.png", width: 45, height: 45,),
-                          Icon(Icons.access_time_rounded),
+                          Icon(Icons.access_time_rounded, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${todos.length}", style: TextStyle(
                               fontSize: 30,
@@ -146,7 +146,7 @@ class _RecordPageState extends State<RecordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_chart_rounded),
+                          Icon(Icons.add_chart_rounded, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${allTodo.length}", style: TextStyle(
                               fontSize: 30,
@@ -206,7 +206,7 @@ class _RecordPageState extends State<RecordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_box_outlined),
+                          Icon(Icons.add_box_outlined, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${todayUndone.length}", style: TextStyle(
                               fontSize: 30,
@@ -251,7 +251,7 @@ class _RecordPageState extends State<RecordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_box),
+                          Icon(Icons.add_box, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${undone.length}", style: TextStyle(
                               fontSize: 30,
@@ -311,7 +311,7 @@ class _RecordPageState extends State<RecordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_box_outlined),
+                          Icon(Icons.add_box_outlined, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${todayDone.length}", style: TextStyle(
                               fontSize: 30,
@@ -356,7 +356,7 @@ class _RecordPageState extends State<RecordPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add_box),
+                          Icon(Icons.add_box, color: Theme.of(context).appBarTheme.iconTheme.color),
                           SizedBox(width: 55,),
                           Text("${done.length}", style: TextStyle(
                               fontSize: 30,

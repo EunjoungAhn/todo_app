@@ -136,7 +136,16 @@ class _UnDoneAllHistoryState extends State<UnDoneAllHistory> {
           children: [
             //Padding(padding: EdgeInsets.all(30)),
             Container(
-              color: Color(0xffa6b9c0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 10,
+                    offset: const Offset(0, 0),
+                    color: Colors.black.withOpacity(0.1),
+                  )
+                ],
+              ),
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
               child: Row(
                 children: [
@@ -149,10 +158,9 @@ class _UnDoneAllHistoryState extends State<UnDoneAllHistory> {
                       controller: _filter,
                       decoration: InputDecoration(
                         filled: true,
-                        fillColor: Color(0xffa6b9c0),
+                        fillColor: Colors.white,
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.white60,
                           size: 20,
                         ),
                         //뒤에 붙는 아이콘 - 클릭 했을때 캔슬 아이콘
