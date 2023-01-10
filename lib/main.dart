@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                    ),
               SizedBox(height: 15), // 검색 후, 보여지는 화면을 위해 사이즈를 주어야 에러가 안난다.
                */
-              Text("Continue", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("Continue", style: Theme.of(context).textTheme.headline3,),
               ],
             ),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -251,7 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         else if(index == 2){
           return Container(
-            child: Text("Check", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            child: Text("Check", style: Theme.of(context).textTheme.headline3,),
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
           );
         }else if(index == 3){
@@ -409,14 +409,14 @@ class TodoCardWidget extends StatelessWidget {
           Row(
             children: [
               now == t.date ? Text("${time.month}월 ${time.day}일",
-                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold))
+                  style: Theme.of(context).textTheme.headline2,)
               : Text("${time.month}월 ${time.day}일",
-                  style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)
+                  style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(width: 20,),
               t.alarmCheck == 0 ?
               Text(t.time,
-                style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline2,
               ) :
               Text(""),
             ],
@@ -425,12 +425,12 @@ class TodoCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(t.title, style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold),),
+              Text(t.title, style: Theme.of(context).textTheme.headline1,),
               Text(t.done == 0 ? "미완료" : "완료", style: Theme.of(context).textTheme.subtitle1,),
             ],
           ),
           Container(height: 8,),
-          Text(t.memo, style: TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),),
+          Text(t.memo, style: Theme.of(context).textTheme.bodyText1,),
         ],
       ),
     );

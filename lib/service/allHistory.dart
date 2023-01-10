@@ -153,7 +153,7 @@ class _AllHistoryState extends State<AllHistory> {
                         fillColor: Color(0xffa6b9c0),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.white60,
+                          color: AppBarTheme.of(context).iconTheme.color,
                           size: 20,
                         ),
                         //뒤에 붙는 아이콘 - 클릭 했을때 캔슬 아이콘
